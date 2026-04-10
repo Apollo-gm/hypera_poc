@@ -1,38 +1,55 @@
 using { hypera.conferencia as db } from '../db/schema';
 
+@requires: 'authenticated-user'
 service ConferenceService {
+
+  @restrict: [
+    { grant: 'READ', to: 'authenticated-user' },
+    { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'Supervisor' }
+  ]
   entity Users as projection on db.Users;
-  entity UserAuthorizedDocks as projection on db.UserAuthorizedDocks;
+
+  @restrict: [
+    { grant: 'READ', to: 'authenticated-user' },
+    { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'Supervisor' }
+  ]
   entity Shipments as projection on db.Shipments;
-  entity ShipmentPallets as projection on db.ShipmentPallets;
+
+  @restrict: [
+    { grant: 'READ', to: 'authenticated-user' },
+    { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'Supervisor' }
+  ]
   entity ConferenceAttempts as projection on db.ConferenceAttempts;
-  entity ShipmentHistory as projection on db.ShipmentHistory;
+
+  @restrict: [
+    { grant: 'READ', to: 'authenticated-user' },
+    { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'Supervisor' }
+  ]
   entity VolumeChecks as projection on db.VolumeChecks;
 
+  @requires: 'authenticated-user'
   action startConference(
     shipmentId : UUID,
-    userId : UUID
+    userId     : UUID
   ) returns String;
 
+  @requires: 'authenticated-user'
   action submitCount(
-    shipmentId : UUID,
-    userId : UUID,
-    countedQuantity : Integer,
+    shipmentId       : UUID,
+    userId           : UUID,
+    countedQuantity  : Integer,
     divergenceReason : String
   ) returns String;
 
+  @requires: 'Supervisor'
   action approveAttempt(
-    attemptId : UUID,
-    supervisorId : UUID
+    attemptId     : UUID,
+    supervisorId  : UUID
   ) returns String;
 
-  action releaseThirdCount(
-    shipmentId : UUID,
-    supervisorId : UUID
-  ) returns String;
-
+  @requires: 'Supervisor'
   action startBoxByBox(
-    shipmentId : UUID,
-    supervisorId : UUID
+    shipmentId    : UUID,
+    supervisorId  : UUID
   ) returns String;
 }
