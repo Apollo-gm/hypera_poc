@@ -1,0 +1,18 @@
+{
+  "welcomeFile": "/app/conferencia-ui/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/odata/v4/(.*)$",
+      "target": "/odata/v4/$1",
+      "destination": "srv-api",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/app/conferencia-ui/(.*)$",
+      "target": "$1",
+      "localDir": "../conferencia-ui",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    }
+  ]
+}
