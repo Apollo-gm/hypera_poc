@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "cds watch"
+    "start": "cds watch",
+    "build:ui": "ui5 build --config app/conferencia-ui/ui5.yaml --clean-dest",
+    "serve:ui": "ui5 serve --config app/conferencia-ui/ui5.yaml -o index.html"
   },
   "dependencies": {
     "@sap/cds": "^8",
@@ -11,6 +13,31 @@
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "@sap/cds-dk": "^8"
+    "@sap/cds-dk": "^8",
+    "@ui5/cli": "^4.0.20"
+  },
+  "cds": {
+    "[development]": {
+      "requires": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "colaborador": {
+              "password": "colaborador",
+              "roles": [
+                "authenticated-user"
+              ]
+            },
+            "supervisor": {
+              "password": "supervisor",
+              "roles": [
+                "authenticated-user",
+                "Supervisor"
+              ]
+            }
+          }
+        }
+      }
+    }
   }
 }
