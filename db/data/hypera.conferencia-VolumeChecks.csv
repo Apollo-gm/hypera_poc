@@ -1,0 +1,13 @@
+ID;shipment_ID;attempt_ID;boxIdentifier;tag;barcode;lot;checked;scanned;checkedBy_ID
+bbbbbbb1-bbbb-bbbb-bbbb-bbbbbbbbbbb1;aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1;;BOX-001;PLT-001-01;789100000001;L001;false;false;
+bbbbbbb2-bbbb-bbbb-bbbb-bbbbbbbbbbb2;aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1;;BOX-002;PLT-001-02;789100000002;L001;false;false;
+bbbbbbb3-bbbb-bbbb-bbbb-bbbbbbbbbbb3;aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1;;BOX-003;PLT-001-03;789100000003;L001;false;false;
+bbbbbbb4-bbbb-bbbb-bbbb-bbbbbbbbbbb4;aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1;;BOX-004;PLT-001-04;789100000004;L001;false;false;
+bbbbbbb5-bbbb-bbbb-bbbb-bbbbbbbbbbb5;aaaaaaa2-aaaa-aaaa-aaaa-aaaaaaaaaaa2;;BOX-005;PLT-002-01;789100000005;L002;false;false;
+bbbbbbb6-bbbb-bbbb-bbbb-bbbbbbbbbbb6;aaaaaaa2-aaaa-aaaa-aaaa-aaaaaaaaaaa2;;BOX-006;PLT-002-02;789100000006;L002;false;false;
+bbbbbbb7-bbbb-bbbb-bbbb-bbbbbbbbbbb7;aaaaaaa2-aaaa-aaaa-aaaa-aaaaaaaaaaa2;;BOX-007;PLT-002-03;789100000007;L002;false;false;
+bbbbbbb8-bbbb-bbbb-bbbb-bbbbbbbbbbb8;aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3;;BOX-008;PLT-003-01;789100000008;L003;false;false;
+bbbbbbb9-bbbb-bbbb-bbbb-bbbbbbbbbbb9;aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3;;BOX-009;PLT-003-02;789100000009;L003;false;false;
+bbbbbb10-bbbb-bbbb-bbbb-bbbbbbbbbb10;aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3;;BOX-010;PLT-003-03;789100000010;L003;false;false;
+bbbbbb11-bbbb-bbbb-bbbb-bbbbbbbbbb11;aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3;;BOX-011;PLT-003-04;789100000011;L003;false;false;
+bbbbbb12-bbbb-bbbb-bbbb-bbbbbbbbbb12;aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3;;BOX-012;PLT-003-05;789100000012;L003;false;false;

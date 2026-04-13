@@ -24,10 +24,10 @@ type ShipmentStatus : String enum {
 }
 
 entity Users : managed {
-  key ID   : UUID;
-      name : String(100);
-      email: String(120);
-      role : Role;
+  key ID            : UUID;
+      name          : String(100);
+      email         : String(120);
+      role          : Role;
 }
 
 entity Shipments : managed {
@@ -35,11 +35,22 @@ entity Shipments : managed {
       transportDocument : String(40);
       shipmentNumber    : String(40);
       orderNumber       : String(40);
+      product           : String(120);
+      carrier           : String(100);
+      carrierPlate      : String(20);
+      dock              : String(20);
+      destination       : String(120);
       expectedQuantity  : Integer;
       countedQuantity   : Integer default 0;
       status            : ShipmentStatus default 'PENDING';
       palletTag         : String(60);
       notes             : String(500);
+
+      attemptsHistory   : Composition of many ConferenceAttempts
+                            on attemptsHistory.shipment = $self;
+
+      palletsHistory    : Composition of many VolumeChecks
+                            on palletsHistory.shipment = $self;
 }
 
 entity ConferenceAttempts : managed {
@@ -58,6 +69,10 @@ entity VolumeChecks : managed {
       shipment      : Association to Shipments;
       attempt       : Association to ConferenceAttempts;
       boxIdentifier : String(80);
-      checked       : Boolean default true;
+      tag           : String(60);
+      barcode       : String(80);
+      lot           : String(40);
+      checked       : Boolean default false;
+      scanned       : Boolean default false;
       checkedBy     : Association to Users;
 }
