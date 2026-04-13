@@ -28,10 +28,7 @@ service ConferenceService {
   entity VolumeChecks as projection on db.VolumeChecks;
 
   @requires: 'authenticated-user'
-  action startConference(
-    shipmentId : UUID,
-    userId     : UUID
-  ) returns String;
+  action startConference(shipmentId : UUID, userId : UUID) returns String;
 
   @requires: 'authenticated-user'
   action submitCount(
@@ -42,14 +39,18 @@ service ConferenceService {
   ) returns String;
 
   @requires: 'Supervisor'
-  action approveAttempt(
-    attemptId     : UUID,
-    supervisorId  : UUID
-  ) returns String;
+  action approveAttempt(attemptId : UUID, supervisorId : UUID) returns String;
 
   @requires: 'Supervisor'
-  action startBoxByBox(
-    shipmentId    : UUID,
-    supervisorId  : UUID
+  action releaseThirdCount(shipmentId : UUID, supervisorId : UUID) returns String;
+
+  @requires: 'Supervisor'
+  action startBoxByBox(shipmentId : UUID, supervisorId : UUID) returns String;
+
+  @requires: 'Supervisor'
+  action finishBoxByBox(
+    shipmentId      : UUID,
+    supervisorId    : UUID,
+    countedQuantity : Integer
   ) returns String;
 }
