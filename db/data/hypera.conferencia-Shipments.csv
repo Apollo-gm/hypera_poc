@@ -1,0 +1,4 @@
+ID;transportDocument;shipmentNumber;orderNumber;product;carrier;carrierPlate;dock;destination;expectedQuantity;countedQuantity;status;palletTag;notes
+aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1;CTE-1001;REM-0001;PED-9001;Dipirona 500mg;TransSul;ABC1D23;D1;Curitiba;4;0;PENDING;PLT-001;Carga prioritária
+aaaaaaa2-aaaa-aaaa-aaaa-aaaaaaaaaaa2;CTE-1002;REM-0002;PED-9002;Vitamina C;RodoNorte;DEF4G56;D2;Pinhais;3;0;PENDING;PLT-002;Conferir integridade
+aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3;CTE-1003;REM-0003;PED-9003;Analgésico X;Log Mais;HIJ7K89;D3;Maringá;5;0;PENDING;PLT-003;Separação fracionada
