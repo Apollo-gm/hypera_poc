@@ -1,32 +1,28 @@
 <mvc:View
   controllerName="hypera.conferencia.ui.controller.Conference"
-  xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
   xmlns:core="sap.ui.core"
-  height="100%">
+  displayBlock="true">
 
-  <Page
-    id="conferencePage"
-    title="{i18n>conferenceTitle}"
-    showNavButton="true"
-    navButtonPress=".onNavBack"
-    class="hyperaPage hyperaConferencePage">
-
+  <Page class="hyperaPage" showHeader="false">
     <customHeader>
-      <Bar class="hyperaHeader">
+      <Bar class="hyperaHeaderBar">
         <contentLeft>
           <Button
             icon="sap-icon://nav-back"
             type="Transparent"
             press=".onNavBack"
-            tooltip="Voltar" />
+            class="hyperaHeaderBtn" />
         </contentLeft>
+
         <contentMiddle>
-          <VBox alignItems="Center">
-            <Title text="{shipmentNumber}" level="H2" class="hyperaHeaderTitle" />
+          <VBox>
+            <Title text="{shipmentNumber}" level="H3" class="hyperaHeaderTitle" />
             <Text text="{dock} • {carrier}" class="hyperaHeaderSub" />
           </VBox>
         </contentMiddle>
+
         <contentRight>
           <ObjectStatus
             class="hyperaStatusChip"
@@ -47,8 +43,6 @@
     </customHeader>
 
     <content>
-
-      <!-- INFO RESUMIDA DA REMESSA (sempre visível, sem qty esperada) -->
       <Panel class="hyperaInfoCard" backgroundDesign="Solid" expandable="false">
         <headerToolbar>
           <Toolbar>
@@ -87,28 +81,39 @@
         </content>
       </Panel>
 
-      <!-- ============================================================
-           HISTÓRICO DE TENTATIVAS (auditoria)
-           ============================================================ -->
       <Panel
         class="hyperaHistoryCard"
         backgroundDesign="Solid"
         expandable="true"
         expanded="false"
-        visible="{= ${history}.length > 0 }"
-        headerText="Histórico de tentativas">
+        visible="{= ${history}.length &gt; 0 }">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="Histórico de tentativas" level="H3" class="hyperaCardTitle" />
+          </Toolbar>
+        </headerToolbar>
         <content>
-          <List items="{history}" class="hyperaHistoryList" backgroundDesign="Transparent" showSeparators="Inner">
+          <List
+            items="{history}"
+            class="hyperaHistoryList"
+            backgroundDesign="Transparent"
+            showSeparators="Inner">
             <CustomListItem class="hyperaHistoryItem">
-              <HBox alignItems="Center" class="hyperaHistoryRow">
-                <VBox class="hyperaHistoryNum">
-                  <Text text="#{n}" class="hyperaHistoryAttempt" />
-                </VBox>
-                <VBox class="hyperaHistoryInfo">
-                  <Text text="{user}" class="hyperaHistoryUser" />
-                  <Text text="{ts}" class="hyperaHistoryTs" />
-                </VBox>
-                <ToolbarSpacer />
+              <HBox
+                alignItems="Center"
+                justifyContent="SpaceBetween"
+                wrap="Wrap"
+                class="hyperaHistoryRow">
+                <HBox alignItems="Center" wrap="Wrap">
+                  <VBox class="hyperaHistoryNum">
+                    <Text text="#{n}" class="hyperaHistoryAttempt" />
+                  </VBox>
+                  <VBox class="hyperaHistoryInfo">
+                    <Text text="{user}" class="hyperaHistoryUser" />
+                    <Text text="{ts}" class="hyperaHistoryTs" />
+                  </VBox>
+                </HBox>
+
                 <VBox alignItems="End">
                   <Text text="{qty}" class="hyperaHistoryQty" />
                   <ObjectStatus
@@ -128,9 +133,6 @@
         </content>
       </Panel>
 
-      <!-- ============================================================
-           FASE 1: SCAN - escanear etiquetas dos paletes
-           ============================================================ -->
       <Panel
         class="hyperaScanCard"
         backgroundDesign="Solid"
@@ -145,13 +147,11 @@
           </Toolbar>
         </headerToolbar>
         <content>
-
           <VBox class="hyperaScanWrap" alignItems="Center">
-
             <Text text="Escaneie as etiquetas de todos os paletes antes de iniciar a contagem" class="hyperaScanInstructions" />
 
             <Button
-              text="📷  Escanear etiqueta"
+              text=" Escanear etiqueta"
               type="Emphasized"
               press=".onScanPallet"
               class="hyperaScanBtn sapUiSmallMarginTop"
@@ -201,15 +201,10 @@
               class="hyperaPrimaryBtn sapUiMediumMarginTop"
               enabled="{= ${phaseModel>/scannedCount} === ${phaseModel>/totalPallets} }"
               width="100%" />
-
           </VBox>
-
         </content>
       </Panel>
 
-      <!-- ============================================================
-           FASE 2: COUNT - contagem cega (não mostra esperado)
-           ============================================================ -->
       <Panel
         class="hyperaCounterCard hyperaBlindCard"
         backgroundDesign="Solid"
@@ -224,12 +219,9 @@
           </Toolbar>
         </headerToolbar>
         <content>
-
           <VBox class="hyperaCounterWrap" alignItems="Center">
-
             <Text text="Conte fisicamente todos os volumes" class="hyperaBlindHint" />
             <Text text="A quantidade esperada NÃO será exibida" class="hyperaBlindHint hyperaBlindHintBold" />
-
             <Text text="Quantidade contada" class="hyperaCounterLabel sapUiMediumMarginTop" />
 
             <HBox alignItems="Center" justifyContent="Center" class="hyperaStepper">
@@ -258,15 +250,10 @@
               press=".onConfirmBlindCount"
               class="hyperaPrimaryBtn sapUiMediumMarginTop"
               width="100%" />
-
           </VBox>
-
         </content>
       </Panel>
 
-      <!-- ============================================================
-           FASE 3: REVEAL - mostra resultado da contagem
-           ============================================================ -->
       <Panel
         class="hyperaRevealCard"
         backgroundDesign="Solid"
@@ -284,15 +271,15 @@
           </Toolbar>
         </headerToolbar>
         <content>
-
           <VBox class="hyperaRevealWrap" alignItems="Center">
-
             <HBox alignItems="Center" justifyContent="Center" class="hyperaRevealCompare" wrap="Wrap">
               <VBox alignItems="Center" class="hyperaRevealBox">
                 <Text text="Esperado" class="hyperaRevealLabel" />
                 <Title text="{expectedQuantity}" level="H1" class="hyperaRevealValue" />
               </VBox>
+
               <core:Icon src="sap-icon://horizontal-bar-chart" class="hyperaRevealVs" />
+
               <VBox alignItems="Center" class="hyperaRevealBox">
                 <Text text="Contado" class="hyperaRevealLabel" />
                 <Title
@@ -311,9 +298,7 @@
               text="{phaseModel>/revealMessage}"
               class="hyperaRevealMessage sapUiSmallMarginTop" />
 
-            <!-- Ações dependem do estado -->
             <HBox class="hyperaRevealActions sapUiMediumMarginTop" wrap="Wrap" justifyContent="Center">
-
               <Button
                 text="Recontar"
                 type="Emphasized"
@@ -337,17 +322,11 @@
                 press=".onNavBack"
                 class="hyperaPrimaryBtn"
                 visible="{= ${phaseModel>/revealMatch} }" />
-
             </HBox>
-
           </VBox>
-
         </content>
       </Panel>
 
-      <!-- ============================================================
-           FASE 4: WAITING_SUP - aguardando liberação do supervisor
-           ============================================================ -->
       <Panel
         class="hyperaWaitCard"
         backgroundDesign="Solid"
@@ -359,7 +338,6 @@
             <Title text="Aguardando supervisor" level="H2" class="sapUiSmallMarginTop" />
             <Text text="Comunique o supervisor para liberar a 3ª contagem via Monitor Operacional." class="hyperaWaitText sapUiSmallMarginTop" />
 
-            <!-- Visível só se o usuário atual É supervisor (libera direto da própria tela) -->
             <Button
               text="Liberar 3ª contagem (Supervisor)"
               type="Accept"
@@ -374,14 +352,11 @@
               icon="sap-icon://inspect"
               press=".onStartBoxByBox"
               class="hyperaPrimaryBtn sapUiSmallMarginTop"
-              visible="{= ${app>/currentUser/role} === 'SUPERVISOR' &amp;&amp; ${attempts} >= 3 }" />
+              visible="{= ${app>/currentUser/role} === 'SUPERVISOR' &amp;&amp; ${attempts} &gt;= 3 }" />
           </VBox>
         </content>
       </Panel>
 
-      <!-- ============================================================
-           FASE 5: BOX_BY_BOX - conferência caixa a caixa
-           ============================================================ -->
       <Panel
         class="hyperaBoxCard"
         backgroundDesign="Solid"
@@ -400,7 +375,7 @@
             <Text text="caixas escaneadas" class="hyperaInfoLabel" />
 
             <Button
-              text="📷  Escanear caixa"
+              text=" Escanear caixa"
               type="Emphasized"
               press=".onScanBox"
               class="hyperaScanBtn sapUiMediumMarginTop" />
@@ -411,12 +386,11 @@
               icon="sap-icon://accept"
               press=".onFinishBoxByBox"
               class="hyperaPrimaryBtn sapUiSmallMarginTop"
-              enabled="{= ${phaseModel>/boxCount} > 0 &amp;&amp; ${app>/currentUser/role} === 'SUPERVISOR' }" />
+              enabled="{= ${phaseModel>/boxCount} &gt; 0 &amp;&amp; ${app>/currentUser/role} === 'SUPERVISOR' }"
+              width="100%" />
           </VBox>
         </content>
       </Panel>
-
     </content>
-
   </Page>
 </mvc:View>

@@ -1,94 +1,105 @@
 <mvc:View
   controllerName="hypera.conferencia.ui.controller.ShipmentList"
-  xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
   xmlns:core="sap.ui.core"
-  height="100%">
+  displayBlock="true">
 
-  <Page
-    id="shipmentPage"
-    title="Remessas"
-    showNavButton="false"
-    class="hyperaPage hyperaShipmentsPage">
-
-    <!-- HEADER LIMPO -->
+  <Page class="hyperaPage" title="Remessas">
     <customHeader>
-      <Bar class="hyperaHeader hyperaHeaderTall">
+      <Bar class="hyperaHeaderBar">
         <contentLeft>
           <Button
-            icon="sap-icon://log"
-            type="Default"
-            press=".onLogout"
             text="Sair"
+            icon="sap-icon://log"
+            type="Transparent"
+            press=".onLogout"
             class="hyperaHeaderBtn" />
         </contentLeft>
 
         <contentMiddle>
-          <Title text="Remessas" level="H1" class="hyperaHeaderTitle" />
+          <HBox />
         </contentMiddle>
 
         <contentRight>
-          <HBox />
-        </contentRight>
+  <HBox
+    alignItems="Center"
+    justifyContent="End"
+    width="100%"
+    class="sapUiTinyMarginEnd">
+
+    <Title
+      text="Conferência de Embarque - {app>/currentUser/name}"
+      level="H3"
+      class="hyperaHeaderTitle" />
+
+  </HBox>
+</contentRight>
       </Bar>
     </customHeader>
 
     <content>
-
-      <!-- FILTROS -->
       <VBox class="hyperaFiltersBlock">
-
         <HBox wrap="Wrap" class="hyperaFiltersRow">
-
           <VBox class="hyperaFilterField">
-            <Text text="DOCA" class="hyperaFilterLabel"/>
-            <Select id="dockSelect" class="hyperaFilterSelect" width="100%"/>
+            <Text text="DOCA" class="hyperaFilterLabel" />
+            <Select
+              id="dockSelect"
+              class="hyperaFilterSelect"
+              width="100%"
+              change=".onDockChange">
+              <core:Item key="ALL" text="Todas as docas" />
+            </Select>
           </VBox>
 
           <VBox class="hyperaFilterField">
-            <Text text="TRANSPORTADORA" class="hyperaFilterLabel"/>
-            <Select id="carrierSelect" class="hyperaFilterSelect" width="100%"/>
+            <Text text="TRANSPORTADORA" class="hyperaFilterLabel" />
+            <Select
+              id="carrierSelect"
+              class="hyperaFilterSelect"
+              width="100%"
+              change=".onCarrierChange">
+              <core:Item key="ALL" text="Todas as transportadoras" />
+            </Select>
           </VBox>
-
         </HBox>
-
       </VBox>
 
-      <!-- CHIPS -->
-      <ScrollContainer
-        horizontal="true"
-        vertical="false"
-        class="hyperaChipsScroll"
-        width="100%">
+      <VBox class="hyperaFiltersBlock">
+        <ScrollContainer
+          horizontal="true"
+          vertical="false"
+          width="100%"
+          class="hyperaChipsScroll">
+          <HBox
+            class="hyperaChipsRow sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop sapUiTinyMarginBottom"
+            renderType="Bare">
+            <Button id="chipAll" text="Todas" press=".onChipPress" type="Emphasized" class="hyperaChip sapUiTinyMarginEnd" />
+            <Button id="chipPending" text="Pendentes" press=".onChipPress" type="Transparent" class="hyperaChip sapUiTinyMarginEnd" />
+            <Button id="chipInProgress" text="Em andamento" press=".onChipPress" type="Transparent" class="hyperaChip sapUiTinyMarginEnd" />
+            <Button id="chipApproved" text="Aprovadas" press=".onChipPress" type="Transparent" class="hyperaChip sapUiTinyMarginEnd" />
+            <Button id="chipDivergent" text="Divergentes" press=".onChipPress" type="Transparent" class="hyperaChip sapUiTinyMarginEnd" />
+            <Button id="chipBoxByBox" text="Caixa a caixa" press=".onChipPress" type="Transparent" class="hyperaChip" />
+          </HBox>
+        </ScrollContainer>
+      </VBox>
 
-        <HBox class="hyperaChipsRow">
-
-          <Button text="Todas"         press=".onChipPress" class="hyperaChip hyperaChipActive"/>
-          <Button text="Pendentes"     press=".onChipPress" class="hyperaChip"/>
-          <Button text="Em andamento"  press=".onChipPress" class="hyperaChip"/>
-          <Button text="Aprovadas"     press=".onChipPress" class="hyperaChip"/>
-          <Button text="Divergentes"   press=".onChipPress" class="hyperaChip"/>
-          <Button text="Caixa a caixa" press=".onChipPress" class="hyperaChip"/>
-
-        </HBox>
-
-      </ScrollContainer>
-
-      <!-- BUSCA -->
       <VBox class="hyperaFiltersBlock">
         <SearchField
           id="searchField"
           width="100%"
           placeholder="Buscar remessa, produto, doca..."
+          valueLiveUpdate="true"
           liveChange=".onSearch"
-          search=".onSearch"
-          class="hyperaSearchField"/>
+          search=".onSearch" />
       </VBox>
 
-      <!-- LISTA -->
       <List
         id="shipmentList"
-        items="{/Shipments}"
+        items="{
+          path: '/Shipments',
+          templateShareable: false
+        }"
         growing="true"
         growingScrollToLoad="true"
         noDataText="Nenhuma remessa encontrada"
@@ -105,56 +116,58 @@
             class="hyperaItemRow"
             wrap="Wrap">
 
-            <!-- ESQUERDA -->
             <VBox class="hyperaItemMain">
-
               <HBox alignItems="Center" wrap="Wrap">
-                <Text text="{shipmentNumber}" class="hyperaItemNumber"/>
+                <Text text="{shipmentNumber}" class="hyperaItemNumber" />
 
                 <ObjectStatus
-                  text="{status}"
-                  class="hyperaStatusChip sapUiTinyMarginBegin"/>
+                  text="{
+                    path: 'status',
+                    formatter: '.formatter.statusText'
+                  }"
+                  state="{
+                    path: 'status',
+                    formatter: '.formatter.statusState'
+                  }"
+                  icon="{
+                    path: 'status',
+                    formatter: '.formatter.statusIcon'
+                  }"
+                  class="hyperaStatusChip sapUiTinyMarginBegin" />
               </HBox>
 
-              <Text text="{product}" class="hyperaItemProduct"/>
+              <Text text="{product}" class="hyperaItemProduct" />
 
               <HBox class="hyperaItemMeta" wrap="Wrap">
-                <Text text="{dock}" class="hyperaItemMetaText"/>
-                <Text text=" • " class="hyperaItemMetaSep"/>
-                <Text text="{carrier}" class="hyperaItemMetaText"/>
-                <Text text=" • " class="hyperaItemMetaSep"/>
-                <Text text="{destination}" class="hyperaItemMetaText"/>
+                <Text text="{dock}" class="hyperaItemMetaText" />
+                <Text text=" • " class="hyperaItemMetaSep" />
+                <Text text="{carrier}" class="hyperaItemMetaText" />
+                <Text text=" • " class="hyperaItemMetaSep" />
+                <Text text="{destination}" class="hyperaItemMetaText" />
               </HBox>
-
             </VBox>
 
-            <!-- DIREITA -->
             <VBox class="hyperaItemQty" alignItems="End">
-
-              <Text text="Esperado / Contado" class="hyperaItemQtyLabel"/>
+              <Text text="Esperado / Contado" class="hyperaItemQtyLabel" />
 
               <Text
                 text="{
                   parts: ['countedQuantity','expectedQuantity'],
                   formatter: '.formatter.progressText'
                 }"
-                class="hyperaItemQtyText"/>
-
+                class="hyperaItemQtyText" />
             </VBox>
 
           </HBox>
-
         </CustomListItem>
 
       </List>
-
     </content>
 
-    <!-- FOOTER -->
     <footer>
       <Toolbar class="hyperaFooterBar">
-        <Text text="Total: {/Shipments}.length remessas" class="hyperaFooterText"/>
-        <ToolbarSpacer/>
+        <Text id="shipmentTotalText" text="Total: 0 remessas" class="hyperaFooterText" />
+        <ToolbarSpacer />
       </Toolbar>
     </footer>
 
