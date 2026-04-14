@@ -1,29 +1,27 @@
 <mvc:View
   controllerName="hypera.conferencia.ui.controller.Monitor"
-  xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
   xmlns:core="sap.ui.core"
-  height="100%">
+  displayBlock="true">
 
-  <Page
-    id="monitorPage"
-    title="Monitor Operacional"
-    showNavButton="false"
-    class="hyperaPage hyperaMonitorPage">
-
+  <Page class="hyperaPage" title="Monitor Operacional">
     <customHeader>
-      <Bar class="hyperaHeader hyperaHeaderTall">
+      <Bar class="hyperaHeaderBar">
         <contentLeft>
           <Button
-            icon="sap-icon://log"
-            type="Default"
-            press=".onLogout"
             text="Sair"
+            icon="sap-icon://log"
+            type="Transparent"
+            press=".onLogout"
             class="hyperaHeaderBtn" />
         </contentLeft>
 
         <contentMiddle>
-          <Title text="Monitor Operacional" level="H1" class="hyperaHeaderTitle" />
+          <VBox>
+            <Title text="Monitor Operacional" level="H3" class="hyperaHeaderTitle" />
+            <Text text="{app>/currentUser/name}" class="hyperaHeaderSub" />
+          </VBox>
         </contentMiddle>
 
         <contentRight>
@@ -33,9 +31,7 @@
     </customHeader>
 
     <content>
-
       <HBox class="hyperaKpiRow" wrap="Wrap">
-
         <VBox class="hyperaKpiCard hyperaKpiCardTop hyperaKpiTotal">
           <HBox justifyContent="SpaceBetween" alignItems="Start" class="hyperaKpiTopRow">
             <HBox class="hyperaKpiHeader" alignItems="Center">
@@ -101,14 +97,13 @@
           </HBox>
           <Title text="{monitor>/boxByBox}" level="H1" class="hyperaKpiValue" />
         </VBox>
-
       </HBox>
 
       <Panel
         class="hyperaAlertPanel"
         backgroundDesign="Solid"
         expandable="false"
-        visible="{= ${monitor>/awaitingSup} > 0 }">
+        visible="{= ${monitor>/awaitingSup} &gt; 0 }">
         <headerToolbar>
           <Toolbar class="hyperaAlertToolbar">
             <core:Icon src="sap-icon://alert" color="#df6e0c" />
@@ -140,6 +135,7 @@
                     <Text text="2 tentativas com divergência" class="hyperaItemMetaText" />
                   </HBox>
                 </VBox>
+
                 <Button
                   text="Liberar 3ª contagem"
                   type="Emphasized"
@@ -158,13 +154,13 @@
         class="hyperaChipsScroll"
         width="100%">
         <HBox class="hyperaChipsRow">
-          <Button id="chipAll"         text="Todas"         press=".onChipPress" type="Emphasized" class="hyperaChip hyperaChipActive" />
-          <Button id="chipPending"     text="Pendentes"     press=".onChipPress" type="Default"    class="hyperaChip" />
-          <Button id="chipInProgress"  text="Em andamento"  press=".onChipPress" type="Default"    class="hyperaChip" />
-          <Button id="chipDivergent"   text="Divergentes"   press=".onChipPress" type="Default"    class="hyperaChip" />
-          <Button id="chipAwaitingSup" text="Aguardando"    press=".onChipPress" type="Default"    class="hyperaChip" />
-          <Button id="chipBoxByBox"    text="Caixa a caixa" press=".onChipPress" type="Default"    class="hyperaChip" />
-          <Button id="chipApproved"    text="Aprovadas"     press=".onChipPress" type="Default"    class="hyperaChip" />
+          <Button id="chipAll" text="Todas" press=".onChipPress" type="Emphasized" class="hyperaChip hyperaChipActive" />
+          <Button id="chipPending" text="Pendentes" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipInProgress" text="Em andamento" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipDivergent" text="Divergentes" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipAwaitingSup" text="Aguardando" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipBoxByBox" text="Caixa a caixa" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipApproved" text="Aprovadas" press=".onChipPress" type="Default" class="hyperaChip" />
         </HBox>
       </ScrollContainer>
 
@@ -210,7 +206,9 @@
                     formatter: '.formatter.statusIcon'
                   }" />
               </HBox>
+
               <Text text="{product}" class="hyperaItemProduct" />
+
               <HBox class="hyperaItemMeta" wrap="Wrap">
                 <Text text="{dock}" class="hyperaItemMetaText" />
                 <Text text=" • " class="hyperaItemMetaSep" />
@@ -232,7 +230,6 @@
           </HBox>
         </CustomListItem>
       </List>
-
     </content>
 
     <footer>
@@ -241,6 +238,5 @@
         <ToolbarSpacer />
       </Toolbar>
     </footer>
-
   </Page>
 </mvc:View>
