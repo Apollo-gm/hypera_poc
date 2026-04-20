@@ -77,19 +77,9 @@ modules:
       #   parameters:
       #     service-key:
       #       name: hypera-conferencia-auth-key
-    parameters:
-      content:
-        instance:
-          destinations:
-            # [TRIAL-DISABLED] Destinations de auth e backend removidos (dependem do srv).
-            # - Name: hypera-conferencia-auth
-            #   ServiceInstanceName: hypera-conferencia-auth
-            #   ServiceKeyName: hypera-conferencia-auth-key
-            #   Authentication: OAuth2UserTokenExchange
-            - Name: hypera-conferencia-html5-repo-host
-              ServiceInstanceName: hypera-conferencia-html5-repo-host
-              ServiceKeyName: hypera-conferencia-html5-repo-host-key
-          existing_destinations_policy: update
+    # [TRIAL-DISABLED] Bloco content.instance.destinations removido:
+    # configurava o Destination Service que está comentado.
+    # Reativar junto com hypera-conferencia-destination quando o backend voltar.
 
 resources:
   # [TRIAL-DISABLED] HANA HDI container — serviço 'hana' não disponível em trial gratuito.
