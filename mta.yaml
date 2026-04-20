@@ -3,6 +3,9 @@ ID: hypera-conferencia
 version: 1.0.0
 description: POC Hypera - Conferência de Embarque
 
+# MODO MOCK (conta trial): módulos de backend e HANA comentados.
+# Para reativar o deploy completo, descomentar todos os blocos marcados com [TRIAL-DISABLED].
+
 parameters:
   enable-parallel-deployments: true
 
@@ -12,31 +15,33 @@ build-parameters:
     - builder: custom
       commands:
         - npm install
-        - npx cds build --production
+        # [TRIAL-DISABLED] npx cds build --production
 
 modules:
-  - name: hypera-conferencia-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      buildpack: nodejs_buildpack
-      memory: 512M
-      disk-quota: 1024M
-    provides:
-      - name: srv-api
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: hypera-conferencia-auth
-      - name: hypera-conferencia-db
+  # [TRIAL-DISABLED] Backend CAP — requer HANA HDI container (não disponível em trial gratuito).
+  # - name: hypera-conferencia-srv
+  #   type: nodejs
+  #   path: gen/srv
+  #   parameters:
+  #     buildpack: nodejs_buildpack
+  #     memory: 512M
+  #     disk-quota: 1024M
+  #   provides:
+  #     - name: srv-api
+  #       properties:
+  #         srv-url: ${default-url}
+  #   requires:
+  #     - name: hypera-conferencia-auth
+  #     - name: hypera-conferencia-db
 
-  - name: hypera-conferencia-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: hypera-conferencia-db
+  # [TRIAL-DISABLED] Deployer do schema HANA — requer HDI container.
+  # - name: hypera-conferencia-db-deployer
+  #   type: hdb
+  #   path: gen/db
+  #   parameters:
+  #     buildpack: nodejs_buildpack
+  #   requires:
+  #     - name: hypera-conferencia-db
 
   - name: hypera-conferencia-ui
     type: html5
@@ -63,63 +68,69 @@ modules:
       - name: hypera-conferencia-html5-repo-host
         parameters:
           content-target: true
-      - name: hypera-conferencia-destination
-        parameters:
-          content-target: true
-      - name: hypera-conferencia-auth
-        parameters:
-          service-key:
-            name: hypera-conferencia-auth-key
+      # [TRIAL-DISABLED] Destination depende do srv-api que está desabilitado.
+      # - name: hypera-conferencia-destination
+      #   parameters:
+      #     content-target: true
+      # [TRIAL-DISABLED] Auth XSUAA desabilitado junto com o backend.
+      # - name: hypera-conferencia-auth
+      #   parameters:
+      #     service-key:
+      #       name: hypera-conferencia-auth-key
     parameters:
       content:
         instance:
           destinations:
-            - Name: hypera-conferencia-auth
-              ServiceInstanceName: hypera-conferencia-auth
-              ServiceKeyName: hypera-conferencia-auth-key
-              Authentication: OAuth2UserTokenExchange
+            # [TRIAL-DISABLED] Destinations de auth e backend removidos (dependem do srv).
+            # - Name: hypera-conferencia-auth
+            #   ServiceInstanceName: hypera-conferencia-auth
+            #   ServiceKeyName: hypera-conferencia-auth-key
+            #   Authentication: OAuth2UserTokenExchange
             - Name: hypera-conferencia-html5-repo-host
               ServiceInstanceName: hypera-conferencia-html5-repo-host
               ServiceKeyName: hypera-conferencia-html5-repo-host-key
           existing_destinations_policy: update
 
 resources:
-  - name: hypera-conferencia-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
+  # [TRIAL-DISABLED] HANA HDI container — serviço 'hana' não disponível em trial gratuito.
+  # - name: hypera-conferencia-db
+  #   type: com.sap.xs.hdi-container
+  #   parameters:
+  #     service: hana
+  #     service-plan: hdi-shared
 
-  - name: hypera-conferencia-auth
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      service-name: hypera-conferencia-auth
+  # [TRIAL-DISABLED] XSUAA — desabilitado pois o backend (que exige auth) está comentado.
+  # - name: hypera-conferencia-auth
+  #   type: org.cloudfoundry.managed-service
+  #   parameters:
+  #     service: xsuaa
+  #     service-plan: application
+  #     path: ./xs-security.json
+  #     service-name: hypera-conferencia-auth
 
-  - name: hypera-conferencia-destination
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: destination
-      service-plan: lite
-      service-name: hypera-conferencia-destination
-      config:
-        HTML5Runtime_enabled: true
-        init_data:
-          instance:
-            existing_destinations_policy: update
-            destinations:
-              - Name: hypera-conferencia-srv-api
-                URL: ~{srv-api/srv-url}
-                Type: HTTP
-                ProxyType: Internet
-                Authentication: OAuth2UserTokenExchange
-                TokenServiceInstanceName: hypera-conferencia-auth
-                TokenServiceKeyName: hypera-conferencia-auth-key
-                HTML5.ForwardAuthToken: true
-    requires:
-      - name: srv-api
+  # [TRIAL-DISABLED] Destination service — desabilitado pois depende do srv-api.
+  # - name: hypera-conferencia-destination
+  #   type: org.cloudfoundry.managed-service
+  #   parameters:
+  #     service: destination
+  #     service-plan: lite
+  #     service-name: hypera-conferencia-destination
+  #     config:
+  #       HTML5Runtime_enabled: true
+  #       init_data:
+  #         instance:
+  #           existing_destinations_policy: update
+  #           destinations:
+  #             - Name: hypera-conferencia-srv-api
+  #               URL: ~{srv-api/srv-url}
+  #               Type: HTTP
+  #               ProxyType: Internet
+  #               Authentication: OAuth2UserTokenExchange
+  #               TokenServiceInstanceName: hypera-conferencia-auth
+  #               TokenServiceKeyName: hypera-conferencia-auth-key
+  #               HTML5.ForwardAuthToken: true
+  #   requires:
+  #     - name: srv-api
 
   - name: hypera-conferencia-html5-repo-host
     type: org.cloudfoundry.managed-service

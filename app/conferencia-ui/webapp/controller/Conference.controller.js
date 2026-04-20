@@ -154,12 +154,18 @@ sap.ui.define(
           MessageBox.warning("Escaneie todos os paletes antes de iniciar a contagem.");
           return;
         }
-        oPhase.setProperty("/blindCount", 0);
-        oPhase.setProperty("/phase", "COUNT");
 
-        // Atualiza status da remessa pra IN_PROGRESS
-        var oShip = Object.assign({}, this._getShipment(), { status: "IN_PROGRESS" });
-        this._setShipment(oShip);
+        // MODO MOCK: em produção chamar POST /odata/v4/ConferenceService/startConference
+        // Simula latência (0.3s).
+        var that = this;
+        this.getOwnerComponent().simulateBackend(function () {
+          oPhase.setProperty("/blindCount", 0);
+          oPhase.setProperty("/phase", "COUNT");
+
+          // Atualiza status da remessa pra IN_PROGRESS
+          var oShip = Object.assign({}, that._getShipment(), { status: "IN_PROGRESS" });
+          that._setShipment(oShip);
+        });
       },
 
       // ============================================================
@@ -185,44 +191,49 @@ sap.ui.define(
         var iExpected = oShip.expectedQuantity;
         var iAttempt = (oShip.attempts || 0) + 1;
 
-        var bMatch = iCounted === iExpected;
-        var iDiff = iCounted - iExpected;
+        // MODO MOCK: em produção chamar POST /odata/v4/ConferenceService/submitCount
+        // Simula latência de gravação (0.3s).
+        var that = this;
+        this.getOwnerComponent().simulateBackend(function () {
+          var bMatch = iCounted === iExpected;
+          var iDiff = iCounted - iExpected;
 
-        oShip.attempts = iAttempt;
-        oShip.countedQuantity = iCounted;
+          oShip.attempts = iAttempt;
+          oShip.countedQuantity = iCounted;
 
-        if (bMatch) {
-          oShip.status = "APPROVED";
-        } else if (iAttempt >= 3) {
-          // Após 3ª tentativa divergente → caixa por caixa
-          oShip.status = "BOX_BY_BOX";
-        } else if (iAttempt === 2) {
-          // Após 2ª divergência → aguarda supervisor liberar 3ª
-          oShip.status = "AWAITING_SUP";
-        } else {
-          // 1ª divergência → recontar
-          oShip.status = "DIVERGENT";
-        }
+          if (bMatch) {
+            oShip.status = "APPROVED";
+          } else if (iAttempt >= 3) {
+            // Após 3ª tentativa divergente → caixa por caixa
+            oShip.status = "BOX_BY_BOX";
+          } else if (iAttempt === 2) {
+            // Após 2ª divergência → aguarda supervisor liberar 3ª
+            oShip.status = "AWAITING_SUP";
+          } else {
+            // 1ª divergência → recontar
+            oShip.status = "DIVERGENT";
+          }
 
-        this._setShipment(oShip);
+          that._setShipment(oShip);
 
-        // Reveal
-        oPhase.setProperty("/phase", "REVEAL");
-        oPhase.setProperty("/revealMatch", bMatch);
-        oPhase.setProperty("/revealDiff", (iDiff > 0 ? "+" : "") + iDiff);
-        oPhase.setProperty("/displayAttempt", iAttempt > 3 ? 3 : iAttempt);
+          // Reveal
+          oPhase.setProperty("/phase", "REVEAL");
+          oPhase.setProperty("/revealMatch", bMatch);
+          oPhase.setProperty("/revealDiff", (iDiff > 0 ? "+" : "") + iDiff);
+          oPhase.setProperty("/displayAttempt", iAttempt > 3 ? 3 : iAttempt);
 
-        var sMsg;
-        if (bMatch) {
-          sMsg = "Quantidade conferida bate com a esperada. Remessa aprovada.";
-        } else if (iAttempt >= 3) {
-          sMsg = "Divergência persistente após 3 tentativas. Iniciando conferência caixa por caixa.";
-        } else if (iAttempt === 2) {
-          sMsg = "2ª divergência identificada. É necessário aguardar liberação do supervisor.";
-        } else {
-          sMsg = "Divergência identificada. Realize uma nova contagem.";
-        }
-        oPhase.setProperty("/revealMessage", sMsg);
+          var sMsg;
+          if (bMatch) {
+            sMsg = "Quantidade conferida bate com a esperada. Remessa aprovada.";
+          } else if (iAttempt >= 3) {
+            sMsg = "Divergência persistente após 3 tentativas. Iniciando conferência caixa por caixa.";
+          } else if (iAttempt === 2) {
+            sMsg = "2ª divergência identificada. É necessário aguardar liberação do supervisor.";
+          } else {
+            sMsg = "Divergência identificada. Realize uma nova contagem.";
+          }
+          oPhase.setProperty("/revealMessage", sMsg);
+        });
       },
 
       // ============================================================
@@ -251,14 +262,20 @@ sap.ui.define(
           MessageBox.error("Somente supervisor pode liberar a 3ª contagem.");
           return;
         }
-        // Volta pra COUNT (3ª tentativa)
-        var oShip = Object.assign({}, this._getShipment(), { status: "IN_PROGRESS" });
-        this._setShipment(oShip);
-        var oPhase = this.getView().getModel("phaseModel");
-        oPhase.setProperty("/blindCount", 0);
-        oPhase.setProperty("/phase", "COUNT");
-        oPhase.setProperty("/displayAttempt", 3);
-        MessageToast.show("3ª contagem liberada pelo supervisor.");
+
+        // MODO MOCK: em produção chamar POST /odata/v4/ConferenceService/releaseThirdCount
+        // Simula latência (0.3s).
+        var that = this;
+        this.getOwnerComponent().simulateBackend(function () {
+          // Volta pra COUNT (3ª tentativa)
+          var oShip = Object.assign({}, that._getShipment(), { status: "IN_PROGRESS" });
+          that._setShipment(oShip);
+          var oPhase = that.getView().getModel("phaseModel");
+          oPhase.setProperty("/blindCount", 0);
+          oPhase.setProperty("/phase", "COUNT");
+          oPhase.setProperty("/displayAttempt", 3);
+          MessageToast.show("3ª contagem liberada pelo supervisor.");
+        });
       },
 
       // ============================================================
@@ -278,24 +295,35 @@ sap.ui.define(
           MessageBox.error("Somente supervisor pode iniciar caixa a caixa.");
           return;
         }
-        var oShip = Object.assign({}, this._getShipment(), { status: "BOX_BY_BOX" });
-        this._setShipment(oShip);
-        var oPhase = this.getView().getModel("phaseModel");
-        oPhase.setProperty("/phase", "BOX_BY_BOX");
-        oPhase.setProperty("/boxCount", 0);
+
+        // MODO MOCK: em produção chamar POST /odata/v4/ConferenceService/startBoxByBox
+        // Simula latência (0.3s).
+        var that = this;
+        this.getOwnerComponent().simulateBackend(function () {
+          var oShip = Object.assign({}, that._getShipment(), { status: "BOX_BY_BOX" });
+          that._setShipment(oShip);
+          var oPhase = that.getView().getModel("phaseModel");
+          oPhase.setProperty("/phase", "BOX_BY_BOX");
+          oPhase.setProperty("/boxCount", 0);
+        });
       },
 
       onFinishBoxByBox: function () {
         var oShip = Object.assign({}, this._getShipment());
         var oPhase = this.getView().getModel("phaseModel");
-        oShip.status = "APPROVED";
-        oShip.countedQuantity = oPhase.getProperty("/boxCount");
-        this._setShipment(oShip);
-        MessageToast.show("Conferência finalizada e aprovada.");
+
+        // MODO MOCK: em produção chamar POST /odata/v4/ConferenceService/finishBoxByBox
+        // Simula latência de gravação (0.3s).
         var that = this;
-        setTimeout(function () {
-          that.getOwnerComponent().getRouter().navTo("shipments");
-        }, 900);
+        this.getOwnerComponent().simulateBackend(function () {
+          oShip.status = "APPROVED";
+          oShip.countedQuantity = oPhase.getProperty("/boxCount");
+          that._setShipment(oShip);
+          MessageToast.show("Conferência finalizada e aprovada.");
+          setTimeout(function () {
+            that.getOwnerComponent().getRouter().navTo("shipments");
+          }, 900);
+        });
       },
 
       onNavBack: function () {

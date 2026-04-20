@@ -40,27 +40,33 @@ sap.ui.define(
         var sName = (this.byId("userNameInput").getValue() || "").trim() || "Operador";
         var sRole = this._sSelectedRole || "COLABORADOR";
 
-        // Busca dados completos do user no mock (incluindo authorizedDocks)
-        var oDataModel = oComponent.getModel();
-        var aUsers = (oDataModel && oDataModel.getProperty("/Users")) || [];
-        var oUserMock = null;
-        for (var i = 0; i < aUsers.length; i++) {
-          if (aUsers[i].role === sRole) { oUserMock = aUsers[i]; break; }
-        }
+        // MODO MOCK: autenticação real ao backend CAP comentada.
+        // Em produção, substituir pela action OData: POST /odata/v4/ConferenceService/login
+        //
+        // Simula latência de autenticação (0.3s).
+        oComponent.simulateBackend(function () {
+          // Busca dados completos do user no mock (incluindo authorizedDocks)
+          var oDataModel = oComponent.getModel();
+          var aUsers = (oDataModel && oDataModel.getProperty("/Users")) || [];
+          var oUserMock = null;
+          for (var i = 0; i < aUsers.length; i++) {
+            if (aUsers[i].role === sRole) { oUserMock = aUsers[i]; break; }
+          }
 
-        oAppModel.setProperty("/currentUser", {
-          ID: oUserMock ? oUserMock.ID : (sRole === "SUPERVISOR"
-              ? "22222222-2222-2222-2222-222222222222"
-              : "11111111-1111-1111-1111-111111111111"),
-          name: sName,
-          role: sRole,
-          authenticated: true,
-          authorizedDocks: oUserMock ? oUserMock.authorizedDocks : [],
+          oAppModel.setProperty("/currentUser", {
+            ID: oUserMock ? oUserMock.ID : (sRole === "SUPERVISOR"
+                ? "22222222-2222-2222-2222-222222222222"
+                : "11111111-1111-1111-1111-111111111111"),
+            name: sName,
+            role: sRole,
+            authenticated: true,
+            authorizedDocks: oUserMock ? oUserMock.authorizedDocks : [],
+          });
+
+          MessageToast.show("Bem-vindo, " + sName);
+          var sRoute = sRole === "SUPERVISOR" ? "monitor" : "shipments";
+          oComponent.getRouter().navTo(sRoute);
         });
-
-        MessageToast.show("Bem-vindo, " + sName);
-        var sRoute = sRole === "SUPERVISOR" ? "monitor" : "shipments";
-        oComponent.getRouter().navTo(sRoute);
       },
     });
   },
