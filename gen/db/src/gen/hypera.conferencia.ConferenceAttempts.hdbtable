@@ -1,0 +1,19 @@
+COLUMN TABLE hypera_conferencia_ConferenceAttempts (
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  ID NVARCHAR(36) NOT NULL,
+  shipment_ID NVARCHAR(36),
+  attemptNumber INTEGER,
+  countedQuantity INTEGER,
+  status NVARCHAR(5000) DEFAULT 'OPEN',
+  divergenceReason NVARCHAR(500),
+  countedBy_ID NVARCHAR(36),
+  approvedBy_ID NVARCHAR(36),
+  PRIMARY KEY(ID)
+) WITH ASSOCIATIONS (
+  MANY TO ONE JOIN hypera_conferencia_Shipments AS shipment ON (shipment.ID = shipment_ID),
+  MANY TO ONE JOIN hypera_conferencia_Users AS countedBy ON (countedBy.ID = countedBy_ID),
+  MANY TO ONE JOIN hypera_conferencia_Users AS approvedBy ON (approvedBy.ID = approvedBy_ID)
+)

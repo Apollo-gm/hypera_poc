@@ -1,0 +1,21 @@
+VIEW ConferenceService_VolumeChecks AS SELECT
+  VolumeChecks_0.createdAt,
+  VolumeChecks_0.createdBy,
+  VolumeChecks_0.modifiedAt,
+  VolumeChecks_0.modifiedBy,
+  VolumeChecks_0.ID,
+  VolumeChecks_0.shipment_ID,
+  VolumeChecks_0.attempt_ID,
+  VolumeChecks_0.boxIdentifier,
+  VolumeChecks_0.tag,
+  VolumeChecks_0.barcode,
+  VolumeChecks_0.lot,
+  VolumeChecks_0.checked,
+  VolumeChecks_0.scanned,
+  VolumeChecks_0.checkedBy_ID
+FROM hypera_conferencia_VolumeChecks AS VolumeChecks_0
+WITH ASSOCIATIONS (
+  MANY TO ONE JOIN ConferenceService_Shipments AS shipment ON (shipment.ID = shipment_ID),
+  MANY TO ONE JOIN ConferenceService_ConferenceAttempts AS attempt ON (attempt.ID = attempt_ID),
+  MANY TO ONE JOIN ConferenceService_Users AS checkedBy ON (checkedBy.ID = checkedBy_ID)
+)

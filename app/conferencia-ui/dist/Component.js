@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/UIComponent","sap/ui/model/json/JSONModel"],function(e,t){"use strict";return e.extend("hypera.conferencia.ui.Component",{metadata:{manifest:"json"},init:function(){e.prototype.init.apply(this,arguments);var n=new t({currentUser:{ID:null,name:"",role:"COLABORADOR",authenticated:false},ui:{busy:false}});this.setModel(n,"app");this.getRouter().initialize()}})});
+//# sourceMappingURL=Component.js.map

@@ -1,0 +1,10 @@
+VIEW ConferenceService_Users AS SELECT
+  Users_0.createdAt,
+  Users_0.createdBy,
+  Users_0.modifiedAt,
+  Users_0.modifiedBy,
+  Users_0.ID,
+  Users_0.name,
+  Users_0.email,
+  Users_0.role
+FROM hypera_conferencia_Users AS Users_0

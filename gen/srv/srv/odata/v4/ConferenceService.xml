@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+    <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="ConferenceService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotation Term="Core.Links">
+        <Collection>
+          <Record>
+            <PropertyValue Property="rel" String="author"/>
+            <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+          </Record>
+        </Collection>
+      </Annotation>
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Users" EntityType="ConferenceService.Users"/>
+        <EntitySet Name="Shipments" EntityType="ConferenceService.Shipments">
+          <NavigationPropertyBinding Path="attemptsHistory" Target="ConferenceAttempts"/>
+          <NavigationPropertyBinding Path="palletsHistory" Target="VolumeChecks"/>
+        </EntitySet>
+        <EntitySet Name="ConferenceAttempts" EntityType="ConferenceService.ConferenceAttempts">
+          <NavigationPropertyBinding Path="shipment" Target="Shipments"/>
+          <NavigationPropertyBinding Path="countedBy" Target="Users"/>
+          <NavigationPropertyBinding Path="approvedBy" Target="Users"/>
+        </EntitySet>
+        <EntitySet Name="VolumeChecks" EntityType="ConferenceService.VolumeChecks">
+          <NavigationPropertyBinding Path="shipment" Target="Shipments"/>
+          <NavigationPropertyBinding Path="attempt" Target="ConferenceAttempts"/>
+          <NavigationPropertyBinding Path="checkedBy" Target="Users"/>
+        </EntitySet>
+        <ActionImport Name="startConference" Action="ConferenceService.startConference"/>
+        <ActionImport Name="submitCount" Action="ConferenceService.submitCount"/>
+        <ActionImport Name="approveAttempt" Action="ConferenceService.approveAttempt"/>
+        <ActionImport Name="releaseThirdCount" Action="ConferenceService.releaseThirdCount"/>
+        <ActionImport Name="startBoxByBox" Action="ConferenceService.startBoxByBox"/>
+        <ActionImport Name="finishBoxByBox" Action="ConferenceService.finishBoxByBox"/>
+      </EntityContainer>
+      <EntityType Name="Users">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="email" Type="Edm.String" MaxLength="120"/>
+        <Property Name="role" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Shipments">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="transportDocument" Type="Edm.String" MaxLength="40"/>
+        <Property Name="shipmentNumber" Type="Edm.String" MaxLength="40"/>
+        <Property Name="orderNumber" Type="Edm.String" MaxLength="40"/>
+        <Property Name="product" Type="Edm.String" MaxLength="120"/>
+        <Property Name="carrier" Type="Edm.String" MaxLength="100"/>
+        <Property Name="carrierPlate" Type="Edm.String" MaxLength="20"/>
+        <Property Name="dock" Type="Edm.String" MaxLength="20"/>
+        <Property Name="destination" Type="Edm.String" MaxLength="120"/>
+        <Property Name="expectedQuantity" Type="Edm.Int32"/>
+        <Property Name="countedQuantity" Type="Edm.Int32" DefaultValue="0"/>
+        <Property Name="status" Type="Edm.String" DefaultValue="PENDING"/>
+        <Property Name="palletTag" Type="Edm.String" MaxLength="60"/>
+        <Property Name="notes" Type="Edm.String" MaxLength="500"/>
+        <NavigationProperty Name="attemptsHistory" Type="Collection(ConferenceService.ConferenceAttempts)" Partner="shipment">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="palletsHistory" Type="Collection(ConferenceService.VolumeChecks)" Partner="shipment">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="ConferenceAttempts">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="shipment" Type="ConferenceService.Shipments" Partner="attemptsHistory">
+          <ReferentialConstraint Property="shipment_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="shipment_ID" Type="Edm.Guid"/>
+        <Property Name="attemptNumber" Type="Edm.Int32"/>
+        <Property Name="countedQuantity" Type="Edm.Int32"/>
+        <Property Name="status" Type="Edm.String" DefaultValue="OPEN"/>
+        <Property Name="divergenceReason" Type="Edm.String" MaxLength="500"/>
+        <NavigationProperty Name="countedBy" Type="ConferenceService.Users">
+          <ReferentialConstraint Property="countedBy_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="countedBy_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="approvedBy" Type="ConferenceService.Users">
+          <ReferentialConstraint Property="approvedBy_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="approvedBy_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="VolumeChecks">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="shipment" Type="ConferenceService.Shipments" Partner="palletsHistory">
+          <ReferentialConstraint Property="shipment_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="shipment_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="attempt" Type="ConferenceService.ConferenceAttempts">
+          <ReferentialConstraint Property="attempt_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="attempt_ID" Type="Edm.Guid"/>
+        <Property Name="boxIdentifier" Type="Edm.String" MaxLength="80"/>
+        <Property Name="tag" Type="Edm.String" MaxLength="60"/>
+        <Property Name="barcode" Type="Edm.String" MaxLength="80"/>
+        <Property Name="lot" Type="Edm.String" MaxLength="40"/>
+        <Property Name="checked" Type="Edm.Boolean" DefaultValue="false"/>
+        <Property Name="scanned" Type="Edm.Boolean" DefaultValue="false"/>
+        <NavigationProperty Name="checkedBy" Type="ConferenceService.Users">
+          <ReferentialConstraint Property="checkedBy_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="checkedBy_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <Action Name="startConference" IsBound="false">
+        <Parameter Name="shipmentId" Type="Edm.Guid"/>
+        <Parameter Name="userId" Type="Edm.Guid"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="submitCount" IsBound="false">
+        <Parameter Name="shipmentId" Type="Edm.Guid"/>
+        <Parameter Name="userId" Type="Edm.Guid"/>
+        <Parameter Name="countedQuantity" Type="Edm.Int32"/>
+        <Parameter Name="divergenceReason" Type="Edm.String"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="approveAttempt" IsBound="false">
+        <Parameter Name="attemptId" Type="Edm.Guid"/>
+        <Parameter Name="supervisorId" Type="Edm.Guid"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="releaseThirdCount" IsBound="false">
+        <Parameter Name="shipmentId" Type="Edm.Guid"/>
+        <Parameter Name="supervisorId" Type="Edm.Guid"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="startBoxByBox" IsBound="false">
+        <Parameter Name="shipmentId" Type="Edm.Guid"/>
+        <Parameter Name="supervisorId" Type="Edm.Guid"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Action Name="finishBoxByBox" IsBound="false">
+        <Parameter Name="shipmentId" Type="Edm.Guid"/>
+        <Parameter Name="supervisorId" Type="Edm.Guid"/>
+        <Parameter Name="countedQuantity" Type="Edm.Int32"/>
+        <ReturnType Type="Edm.String"/>
+      </Action>
+      <Annotations Target="ConferenceService.Users/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Users/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Users/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Users/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Users/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Users/role">
+        <Annotation Term="Validation.AllowedValues">
+          <Collection>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="COLABORADOR"/>
+              <PropertyValue Property="Value" String="COLABORADOR"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="SUPERVISOR"/>
+              <PropertyValue Property="Value" String="SUPERVISOR"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ConferenceService.Shipments/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Shipments/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Shipments/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Shipments/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Shipments/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.Shipments/status">
+        <Annotation Term="Validation.AllowedValues">
+          <Collection>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="PENDING"/>
+              <PropertyValue Property="Value" String="PENDING"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="IN_PROGRESS"/>
+              <PropertyValue Property="Value" String="IN_PROGRESS"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="AWAITING_SUP"/>
+              <PropertyValue Property="Value" String="AWAITING_SUP"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="APPROVED"/>
+              <PropertyValue Property="Value" String="APPROVED"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="DIVERGENT"/>
+              <PropertyValue Property="Value" String="DIVERGENT"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="BOX_BY_BOX"/>
+              <PropertyValue Property="Value" String="BOX_BY_BOX"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ConferenceService.ConferenceAttempts/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.ConferenceAttempts/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.ConferenceAttempts/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.ConferenceAttempts/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.ConferenceAttempts/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.ConferenceAttempts/status">
+        <Annotation Term="Validation.AllowedValues">
+          <Collection>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="OPEN"/>
+              <PropertyValue Property="Value" String="OPEN"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="APPROVED"/>
+              <PropertyValue Property="Value" String="APPROVED"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="DIVERGENT"/>
+              <PropertyValue Property="Value" String="DIVERGENT"/>
+            </Record>
+            <Record Type="Validation.AllowedValue">
+              <Annotation Term="Core.SymbolicName" String="BOX_BY_BOX"/>
+              <PropertyValue Property="Value" String="BOX_BY_BOX"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ConferenceService.VolumeChecks/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.VolumeChecks/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.VolumeChecks/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.VolumeChecks/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ConferenceService.VolumeChecks/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

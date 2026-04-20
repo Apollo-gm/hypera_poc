@@ -1,0 +1,31 @@
+{
+  "xsappname": "hypera-conferencia",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.authenticated-user",
+      "description": "Authenticated user"
+    },
+    {
+      "name": "$XSAPPNAME.Supervisor",
+      "description": "Supervisor role"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "authenticated-user",
+      "description": "Basic user",
+      "scope-references": [
+        "$XSAPPNAME.authenticated-user"
+      ]
+    },
+    {
+      "name": "Supervisor",
+      "description": "Supervisor user",
+      "scope-references": [
+        "$XSAPPNAME.authenticated-user",
+        "$XSAPPNAME.Supervisor"
+      ]
+    }
+  ]
+}

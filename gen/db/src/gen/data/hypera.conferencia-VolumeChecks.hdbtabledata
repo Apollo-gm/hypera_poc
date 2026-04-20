@@ -1,0 +1,43 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "HYPERA_CONFERENCIA_VOLUMECHECKS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "hypera.conferencia-VolumeChecks.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "SHIPMENT_ID",
+          "ATTEMPT_ID",
+          "BOXIDENTIFIER",
+          "TAG",
+          "BARCODE",
+          "LOT",
+          "CHECKED",
+          "SCANNED",
+          "CHECKEDBY_ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "SHIPMENT_ID": "shipment_ID",
+        "ATTEMPT_ID": "attempt_ID",
+        "BOXIDENTIFIER": "boxIdentifier",
+        "TAG": "tag",
+        "BARCODE": "barcode",
+        "LOT": "lot",
+        "CHECKED": "checked",
+        "SCANNED": "scanned",
+        "CHECKEDBY_ID": "checkedBy_ID"
+      }
+    }
+  ]
+}

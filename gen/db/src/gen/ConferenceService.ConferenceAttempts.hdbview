@@ -1,0 +1,19 @@
+VIEW ConferenceService_ConferenceAttempts AS SELECT
+  ConferenceAttempts_0.createdAt,
+  ConferenceAttempts_0.createdBy,
+  ConferenceAttempts_0.modifiedAt,
+  ConferenceAttempts_0.modifiedBy,
+  ConferenceAttempts_0.ID,
+  ConferenceAttempts_0.shipment_ID,
+  ConferenceAttempts_0.attemptNumber,
+  ConferenceAttempts_0.countedQuantity,
+  ConferenceAttempts_0.status,
+  ConferenceAttempts_0.divergenceReason,
+  ConferenceAttempts_0.countedBy_ID,
+  ConferenceAttempts_0.approvedBy_ID
+FROM hypera_conferencia_ConferenceAttempts AS ConferenceAttempts_0
+WITH ASSOCIATIONS (
+  MANY TO ONE JOIN ConferenceService_Shipments AS shipment ON (shipment.ID = shipment_ID),
+  MANY TO ONE JOIN ConferenceService_Users AS countedBy ON (countedBy.ID = countedBy_ID),
+  MANY TO ONE JOIN ConferenceService_Users AS approvedBy ON (approvedBy.ID = approvedBy_ID)
+)

@@ -1,0 +1,11 @@
+COLUMN TABLE hypera_conferencia_Users (
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  ID NVARCHAR(36) NOT NULL,
+  name NVARCHAR(100),
+  email NVARCHAR(120),
+  role NVARCHAR(5000),
+  PRIMARY KEY(ID)
+)

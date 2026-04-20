@@ -1,0 +1,24 @@
+COLUMN TABLE hypera_conferencia_Shipments (
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  ID NVARCHAR(36) NOT NULL,
+  transportDocument NVARCHAR(40),
+  shipmentNumber NVARCHAR(40),
+  orderNumber NVARCHAR(40),
+  "PRODUCT" NVARCHAR(120),
+  carrier NVARCHAR(100),
+  carrierPlate NVARCHAR(20),
+  dock NVARCHAR(20),
+  destination NVARCHAR(120),
+  expectedQuantity INTEGER,
+  countedQuantity INTEGER DEFAULT 0,
+  status NVARCHAR(5000) DEFAULT 'PENDING',
+  palletTag NVARCHAR(60),
+  notes NVARCHAR(500),
+  PRIMARY KEY(ID)
+) WITH ASSOCIATIONS (
+  MANY TO MANY JOIN hypera_conferencia_ConferenceAttempts AS attemptsHistory ON (attemptsHistory.shipment_ID = ID),
+  MANY TO MANY JOIN hypera_conferencia_VolumeChecks AS palletsHistory ON (palletsHistory.shipment_ID = ID)
+)

@@ -1,0 +1,12 @@
+{
+  "name": "hypera-conferencia-ui",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "ui5 build --config ui5.yaml --clean-dest --dest dist",
+    "start": "ui5 serve --config ui5.yaml -o index.html"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^4.0.51"
+  }
+}

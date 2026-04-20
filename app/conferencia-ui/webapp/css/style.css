@@ -1,0 +1,2101 @@
+/* ============================================================
+   Hypera Conferência — POC Lab2dev
+   v2 — Visual Hypera corporativo, tudo maior e mais respirado
+   ============================================================ */
+
+:root {
+  /* Paleta inspirada na marca Hypera (azul + cinzas frios) */
+  --hp-primary: #0061a8;
+  --hp-primary-dark: #004a82;
+  --hp-primary-light: #e8f1fa;
+  --hp-accent: #00a3e0;
+  --hp-bg: #f4f6f9;
+  --hp-bg-card: #ffffff;
+  --hp-bg-soft: #fafbfd;
+  --hp-border: #dfe4ec;
+  --hp-border-strong: #c9d1de;
+  --hp-text: #0f1c2e;
+  --hp-text-soft: #3a4a60;
+  --hp-text-muted: #6b7891;
+  --hp-success: #1a8754;
+  --hp-success-light: #e8f5ee;
+  --hp-warning: #d97706;
+  --hp-warning-light: #fff5e6;
+  --hp-error: #c1272d;
+  --hp-error-light: #fdecec;
+
+  --hp-radius-sm: 8px;
+  --hp-radius: 14px;
+  --hp-radius-lg: 20px;
+
+  --hp-shadow-sm: 0 1px 2px rgba(15, 28, 46, 0.05);
+  --hp-shadow: 0 1px 3px rgba(15, 28, 46, 0.06), 0 6px 18px rgba(15, 28, 46, 0.06);
+  --hp-shadow-lg: 0 4px 12px rgba(15, 28, 46, 0.08), 0 14px 40px rgba(15, 28, 46, 0.10);
+
+  --hp-font: "Inter", "72", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Tamanhos base — generoso pra coletor */
+  --hp-fs-base: 1rem;
+  --hp-fs-lg: 1.125rem;
+  --hp-fs-xl: 1.375rem;
+  --hp-btn-h: 3.5rem;
+  --hp-btn-h-lg: 4rem;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--hp-bg);
+  font-family: var(--hp-font);
+  font-size: 16px;
+  color: var(--hp-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.hyperaApp { background: var(--hp-bg); }
+
+/* ============================================================
+   GLOBAIS — sobrepõe defaults UI5 que estão "engessados"
+   ============================================================ */
+
+/* Botões — tudo maior, mais respiro, cantos suaves */
+.sapMBtn {
+  border-radius: var(--hp-radius-sm) !important;
+}
+.sapMBtn .sapMBtnInner {
+  min-height: 2.75rem !important;
+  padding: 0.5rem 1.25rem !important;
+  font-weight: 600 !important;
+}
+/* Inputs maiores, mas alinhados */
+.sapMInputBase .sapMInputBaseInner,
+.sapMSlt .sapMSltLabel {
+  font-size: 1rem !important;
+  height: 2.75rem !important;
+  min-height: 2.75rem !important;
+  line-height: 2.75rem !important;
+  padding: 0 0.875rem !important;
+  box-sizing: border-box !important;
+}
+
+.sapMInputBaseContentWrapper {
+  min-height: 2.75rem !important;
+  height: 2.75rem !important;
+  display: flex;
+  align-items: center;
+  border-radius: var(--hp-radius-sm) !important;
+}
+.sapMInput,
+.sapMInputBase {
+  width: 100%;
+}
+/* Listas: scroll mais suave */
+.sapMList { background: transparent !important; }
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+.hyperaLoginPage {
+  background: linear-gradient(160deg, #003e6e 0%, #0061a8 50%, #00a3e0 100%) !important;
+}
+.hyperaLoginPage .sapMPageBgSolid { background: transparent !important; }
+
+.hyperaLoginWrap {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.hyperaLoginCard {
+  background: #ffffff;
+  border-radius: var(--hp-radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 30, 70, 0.25), 0 0 0 1px rgba(255,255,255,0.1);
+  padding: 3.25rem 2.75rem 3rem;
+  width: 100%;
+  max-width: 460px;
+  box-sizing: border-box;
+}
+
+.hyperaLoginTitle {
+  font-size: 1.75rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+  text-align: center;
+  margin: 0.5rem 0 0.25rem !important;
+  letter-spacing: -0.02em;
+}
+
+.hyperaLoginSubtitle {
+  color: var(--hp-text-muted) !important;
+  font-size: 1rem !important;
+  text-align: center;
+  margin-bottom: 1rem !important;
+}
+
+.hyperaLabel {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text-soft) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 1.5rem 0 0.65rem !important;
+  align-self: flex-start;
+}
+
+.hyperaInput .sapMInputBaseInner,
+.hyperaSelect .sapMSltLabel {
+  font-size: 1.1rem !important;
+  height: 3.25rem !important;
+  line-height: 3.25rem !important;
+  padding: 0 1rem !important;
+}
+
+.hyperaInput .sapMInputBaseInner {
+  border-radius: var(--hp-radius-sm) !important;
+}
+
+.hyperaPrimaryBtn .sapMBtnInner,
+.hyperaPrimaryBtn {
+  height: var(--hp-btn-h-lg) !important;
+  min-height: var(--hp-btn-h-lg) !important;
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  border-radius: var(--hp-radius-sm) !important;
+  letter-spacing: 0.01em;
+}
+
+.hyperaFooter {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-size: 0.8rem !important;
+  margin-top: 1.5rem !important;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+/* ============================================================
+   HEADER
+   ============================================================ */
+.hyperaHeader {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--hp-border) !important;
+  min-height: 4.35rem !important;
+  height: 4.35rem !important;
+  padding: 0 1rem !important;
+  box-shadow: 0 2px 10px rgba(15, 28, 46, 0.05);
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.hyperaHeaderTall {
+  min-height: 4.35rem !important;
+  height: 4.35rem !important;
+}
+
+.hyperaHeader > .sapMBarContainer,
+.hyperaHeader > .sapMIBar {
+  width: 100% !important;
+}
+
+.hyperaHeader .sapMBarLeft,
+.hyperaHeader .sapMBarMiddle,
+.hyperaHeader .sapMBarRight,
+.hyperaHeader .sapMBarPH {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.hyperaHeader .sapMBarLeft {
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+}
+
+.hyperaHeader .sapMBarMiddle {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  padding: 0 1rem !important;
+  overflow: hidden !important;
+}
+
+.hyperaHeader .sapMBarRight {
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+}
+
+.hyperaHeaderTitle {
+  font-size: 1.02rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Botão sair sem container visível */
+.hyperaHeaderBtn .sapMBtnInner {
+  min-height: 2.3rem !important;
+  height: 2.3rem !important;
+  padding: 0 0.4rem !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--hp-text-soft) !important;
+  font-weight: 700 !important;
+}
+
+.hyperaHeaderBtn .sapMBtnInner:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--hp-primary) !important;
+}
+
+.hyperaHeaderBtn .sapMBtnIcon {
+  color: inherit !important;
+  font-size: 1rem !important;
+}
+
+.hyperaHeaderBtn .sapMBtnContent {
+  padding-left: 0.25rem !important;
+}
+/* Área direita */
+.hyperaHeaderRight {
+  gap: 0.55rem !important;
+  align-items: center !important;
+  display: inline-flex !important;
+  width: auto !important;
+}
+
+/* Sino */
+.hyperaBellBtn {
+  position: relative !important;
+  display: inline-block !important;
+}
+
+.hyperaBellBtn .sapMBtnInner {
+  width: 2.65rem !important;
+  height: 2.65rem !important;
+  min-width: 2.65rem !important;
+  min-height: 2.65rem !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid var(--hp-border) !important;
+  background: var(--hp-bg-soft) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  transition: all 0.16s ease;
+}
+
+.hyperaBellBtn .sapMBtnIcon {
+  font-size: 1rem !important;
+  color: var(--hp-text-soft) !important;
+}
+
+.hyperaBellBtn:hover .sapMBtnInner {
+  background: var(--hp-primary-light) !important;
+  border-color: var(--hp-primary) !important;
+}
+
+.hyperaBellBtn:hover .sapMBtnIcon {
+  color: var(--hp-primary) !important;
+}
+
+/* Usuário */
+.hyperaHeaderUserBadge {
+  background: var(--hp-primary-light) !important;
+  border: 1px solid rgba(0, 97, 168, 0.22) !important;
+  border-radius: 999px !important;
+  padding: 0.45rem 0.85rem 0.45rem 0.75rem !important;
+  height: 2.65rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  max-width: 12.5rem !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.hyperaHeaderUserBadge .sapMObjStatusIcon {
+  color: var(--hp-primary) !important;
+  font-size: 0.95rem !important;
+  margin-right: 0.45rem !important;
+}
+
+.hyperaHeaderUserBadge .sapMObjStatusText {
+  color: var(--hp-primary) !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.hyperaHeaderUserBadge .sapMObjStatusInner {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+}
+/* ============================================================
+   FILTERS BLOCK (search + filtros DOCA/TRANSPORTADORA)
+   ============================================================ */
+.hyperaFiltersBlock {
+  background: transparent !important;
+  padding: 1rem 1.25rem 0.5rem !important;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.85rem;
+}
+
+/* ============================================================
+   SUBHEADER (search + filtros doca/transportadora)
+   ============================================================ */
+body .hyperaSearchField {
+  width: 100% !important;
+  display: block !important;
+}
+
+body .hyperaSearchField .sapMSF,
+body .hyperaSearchField.sapMSF {
+  border-radius: 1rem !important;
+  border: 1px solid var(--hp-border) !important;
+  background: #ffffff !important;
+  width: 100% !important;
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 3rem !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  box-shadow: 0 3px 12px rgba(15, 28, 46, 0.05) !important;
+}
+
+body .hyperaSearchField .sapMSF:hover {
+  border-color: var(--hp-primary) !important;
+}
+
+body .hyperaSearchField .sapMSFF,
+body .hyperaSearchField .sapMSFB {
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  flex: 1 1 auto !important;
+}
+
+body .hyperaSearchField input,
+body .hyperaSearchField .sapMSFI {
+  font-size: 0.98rem !important;
+  height: auto !important;
+  line-height: normal !important;
+  padding: 0 0 0 0.95rem !important;
+  background: transparent !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  align-self: center !important;
+  color: var(--hp-text) !important;
+}
+
+.hyperaSecondaryFilters {
+  gap: 1.25rem !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap;
+}
+.hyperaFilterField {
+  flex: 1 1 220px;
+  min-width: 200px;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+.hyperaFilterLabel {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.15rem 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+}
+/* Especificidade alta com body pra ganhar de qualquer regra UI5 interna */
+body .hyperaFilterSelect {
+  width: 100% !important;
+  display: block !important;
+}
+body .hyperaFilterSelect .sapMSlt,
+body .hyperaFilterSelect.sapMSlt,
+body .hyperaFilterSelect[role="combobox"] {
+  border: 1.5px solid var(--hp-border) !important;
+  border-radius: var(--hp-radius-sm) !important;
+  background: var(--hp-bg-soft) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  height: 3.25rem !important;
+  min-height: 3.25rem !important;
+  max-height: 3.25rem !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+body .hyperaFilterSelect .sapMSlt:hover {
+  border-color: var(--hp-primary) !important;
+  background: var(--hp-primary-light) !important;
+}
+body .hyperaFilterSelect .sapMSltLabel,
+body .hyperaFilterSelect .sapMSltLabelBase {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--hp-text) !important;
+  height: auto !important;
+  line-height: normal !important;
+  padding: 0 0 0 1rem !important;
+  margin: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  align-self: center !important;
+}
+body .hyperaFilterSelect .sapMSltArrow {
+  color: var(--hp-text-soft) !important;
+  height: auto !important;
+  line-height: normal !important;
+  margin: 0 0.75rem 0 0.25rem !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+}
+
+/* ============================================================
+   FILTER TAB BAR
+   ============================================================ */
+.hyperaFilterBar .sapMITBHead {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--hp-border) !important;
+  padding: 0.25rem 0.5rem !important;
+}
+.hyperaFilterBar .sapMITBContent { display: none !important; }
+.hyperaFilterBar .sapMITBText {
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+}
+.hyperaFilterBar .sapMITBFilter {
+  padding: 0.6rem 1rem !important;
+}
+
+/* ============================================================
+   LIST
+   ============================================================ */
+.hyperaList {
+  background: var(--hp-bg) !important;
+  padding: 2rem 1.5rem !important;
+}
+.hyperaList .sapMListUl { background: transparent !important; }
+
+.hyperaListItem {
+  background: var(--hp-bg-card) !important;
+  border: 1px solid var(--hp-border) !important;
+  border-radius: var(--hp-radius) !important;
+  margin-bottom: 1.4rem !important;
+  box-shadow: var(--hp-shadow);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  overflow: hidden;
+}
+.hyperaListItem:hover {
+  border-color: var(--hp-primary) !important;
+  box-shadow: var(--hp-shadow-lg);
+  transform: translateY(-2px);
+}
+.hyperaListItem:active { transform: translateY(0); }
+
+.hyperaItemRow {
+  padding: 1.85rem 2rem !important;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1.75rem;
+}
+
+.hyperaItemMain { flex: 1 1 auto; min-width: 0; gap: 0.5rem; }
+.hyperaItemNumber {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+  letter-spacing: -0.015em;
+}
+.hyperaItemProduct {
+  font-size: 1.08rem !important;
+  color: var(--hp-text-soft) !important;
+  font-weight: 500 !important;
+  margin-top: 0.5rem !important;
+}
+.hyperaItemMeta { margin-top: 0.8rem !important; gap: 0 !important; }
+.hyperaItemMetaText,
+.hyperaItemMetaSep {
+  font-size: 0.85rem !important;
+  color: var(--hp-text-muted) !important;
+  font-weight: 500;
+}
+.hyperaItemMetaTextStrong {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-primary) !important;
+  background: var(--hp-primary-light);
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+}
+.hyperaItemMetaSep { margin: 0 0.4rem !important; }
+
+.hyperaItemQty {
+  flex: 0 0 auto;
+  text-align: right;
+  border-left: 1px solid var(--hp-border);
+  padding: 0.5rem 0 0.5rem 1.65rem !important;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.hyperaItemQtyText {
+  font-size: 1.55rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-primary) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.hyperaItemQtyLabel {
+  font-size: 0.7rem !important;
+  color: var(--hp-text-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.25rem !important;
+  font-weight: 600;
+}
+.hyperaStatusChip {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  padding: 0.3rem 0.75rem !important;
+  margin-left: 0.85rem !important;
+  border-radius: 999px !important;
+  background: var(--hp-bg-soft);
+  border: 1px solid var(--hp-border);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.hyperaFooterBar {
+  background: #ffffff !important;
+  border-top: 1px solid var(--hp-border) !important;
+  min-height: 2.75rem !important;
+  padding: 0 1rem !important;
+}
+
+.hyperaFooterText {
+  font-size: 0.78rem !important;
+  color: var(--hp-text-muted) !important;
+  font-weight: 500;
+}
+
+/* ============================================================
+   CONFERENCE PAGE — cards
+   ============================================================ */
+.hyperaConferencePage .sapMPageBgSolid { background: var(--hp-bg) !important; }
+
+.hyperaInfoCard,
+.hyperaCounterCard,
+.hyperaScanCard,
+.hyperaRevealCard,
+.hyperaWaitCard,
+.hyperaBoxCard,
+.hyperaReasonCard,
+.hyperaHistoryCard {
+  background: var(--hp-bg-card) !important;
+  border: 1px solid var(--hp-border) !important;
+  border-radius: var(--hp-radius) !important;
+  margin: 1.5rem 1.25rem !important;
+  box-shadow: var(--hp-shadow);
+  overflow: hidden;
+}
+
+.hyperaInfoCard .sapMPanelHdr,
+.hyperaCounterCard .sapMPanelHdr,
+.hyperaScanCard .sapMPanelHdr,
+.hyperaRevealCard .sapMPanelHdr,
+.hyperaBoxCard .sapMPanelHdr {
+  background: var(--hp-bg-soft) !important;
+  border-bottom: 1px solid var(--hp-border) !important;
+  padding: 1.25rem 1.65rem !important;
+}
+
+.hyperaCardTitle {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text) !important;
+  letter-spacing: -0.01em;
+}
+
+.hyperaCardTag {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-primary) !important;
+  background: var(--hp-primary-light);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+}
+
+.hyperaInfoGrid {
+  padding: 1.75rem 1.75rem 2rem !important;
+  gap: 1.75rem;
+}
+.hyperaInfoCell {
+  flex: 1 1 160px;
+  min-width: 160px;
+}
+.hyperaInfoLabel {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem !important;
+}
+.hyperaInfoValue {
+  font-size: 1.05rem !important;
+  color: var(--hp-text) !important;
+  font-weight: 600 !important;
+}
+
+/* ============================================================
+   SCAN PHASE
+   ============================================================ */
+.hyperaScanWrap {
+  padding: 2.25rem 1.75rem 2.5rem !important;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1.25rem;
+}
+.hyperaScanInstructions {
+  font-size: 1rem !important;
+  color: var(--hp-text-soft) !important;
+  text-align: center;
+  max-width: 32rem;
+  line-height: 1.5;
+}
+.hyperaScanBtn {
+  height: 4rem !important;
+  min-height: 4rem !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  border-radius: var(--hp-radius-sm) !important;
+  padding: 0 2rem !important;
+  min-width: 18rem;
+  letter-spacing: 0.01em;
+}
+.hyperaScanBtn .sapMBtnInner {
+  min-height: 4rem !important;
+  font-size: 1.15rem !important;
+}
+.hyperaScanCount {
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-primary) !important;
+  font-variant-numeric: tabular-nums;
+  background: var(--hp-primary-light);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+}
+
+.hyperaPalletList {
+  width: 100%;
+  margin-top: 1.5rem !important;
+}
+.hyperaPalletItem {
+  border: 1px solid var(--hp-border) !important;
+  border-radius: var(--hp-radius-sm) !important;
+  margin-bottom: 0.6rem !important;
+  background: var(--hp-bg-soft) !important;
+  transition: background 120ms ease;
+}
+.hyperaPalletItem:hover { background: #ffffff !important; }
+.hyperaPalletRow {
+  padding: 1rem 1.15rem;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+.hyperaPalletIcon {
+  font-size: 1.5rem !important;
+}
+.hyperaPalletInfo { flex: 1 1 auto; min-width: 0; }
+.hyperaPalletTag {
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+  font-family: "SF Mono", Menlo, Monaco, monospace;
+}
+.hyperaPalletBarcode {
+  font-size: 0.78rem !important;
+  color: var(--hp-text-muted) !important;
+  font-family: "SF Mono", Menlo, Monaco, monospace;
+  margin-top: 0.15rem;
+}
+.hyperaPalletMeta {
+  margin-top: 0.15rem;
+  flex-wrap: wrap;
+}
+.hyperaPalletLot {
+  font-size: 0.78rem !important;
+  color: var(--hp-primary) !important;
+  font-family: "SF Mono", Menlo, Monaco, monospace;
+  font-weight: 700 !important;
+}
+
+/* ============================================================
+   HISTÓRICO DE TENTATIVAS
+   ============================================================ */
+.hyperaHistoryCard {
+  background: var(--hp-bg-card) !important;
+  border: 1px solid var(--hp-border) !important;
+  border-radius: var(--hp-radius) !important;
+  margin: 1rem !important;
+  box-shadow: var(--hp-shadow);
+  overflow: hidden;
+}
+.hyperaHistoryCard .sapMPanelHdr {
+  background: var(--hp-bg-soft) !important;
+  border-bottom: 1px solid var(--hp-border) !important;
+  padding: 1rem 1.25rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text) !important;
+  font-size: 1rem !important;
+}
+.hyperaHistoryList { padding: 0 !important; background: transparent !important; }
+.hyperaHistoryItem {
+  border-bottom: 1px solid var(--hp-border) !important;
+  background: transparent !important;
+}
+.hyperaHistoryItem:last-child { border-bottom: none !important; }
+.hyperaHistoryRow {
+  padding: 1rem 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+.hyperaHistoryNum {
+  width: 2.5rem;
+  flex-shrink: 0;
+}
+.hyperaHistoryAttempt {
+  font-size: 1.2rem !important;
+  font-weight: 900 !important;
+  color: var(--hp-primary) !important;
+}
+.hyperaHistoryInfo { flex: 1 1 auto; }
+.hyperaHistoryUser {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: var(--hp-text) !important;
+}
+.hyperaHistoryTs {
+  font-size: 0.78rem !important;
+  color: var(--hp-text-muted) !important;
+  font-family: "SF Mono", Menlo, Monaco, monospace;
+  margin-top: 0.15rem;
+}
+.hyperaHistoryQty {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   COUNTER (cega) — o coração da tela
+   ============================================================ */
+.hyperaCounterCard.hyperaBlindCard {
+  border-left: 5px solid var(--hp-warning) !important;
+  background: linear-gradient(180deg, var(--hp-warning-light) 0%, var(--hp-bg-card) 80px) !important;
+}
+.hyperaCounterWrap {
+  padding: 2.5rem 1.75rem 2.75rem !important;
+  gap: 0.5rem;
+}
+.hyperaBlindHint {
+  font-size: 1rem !important;
+  color: var(--hp-text-soft) !important;
+  text-align: center;
+  font-weight: 500;
+}
+.hyperaBlindHintBold {
+  font-weight: 800 !important;
+  color: var(--hp-warning) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem !important;
+  margin-top: 0.35rem !important;
+}
+.hyperaCounterLabel {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.hyperaStepper {
+  margin-top: 1rem !important;
+  gap: 1rem;
+}
+.hyperaStepBtn,
+.hyperaStepBtn .sapMBtnInner {
+  width: 4.5rem !important;
+  height: 4.5rem !important;
+  min-width: 4.5rem !important;
+  min-height: 4.5rem !important;
+  font-size: 2rem !important;
+  border-radius: 50% !important;
+  background: var(--hp-primary-light) !important;
+  border: 2px solid var(--hp-primary) !important;
+  color: var(--hp-primary) !important;
+  box-shadow: var(--hp-shadow-sm);
+  transition: transform 120ms ease, background 120ms ease;
+}
+.hyperaStepBtn:hover { transform: scale(1.05); background: #d6e8f7 !important; }
+.hyperaStepBtn:active { transform: scale(0.95); }
+
+.hyperaCountInput {
+  width: 9rem !important;
+}
+.hyperaCountInput .sapMInputBaseInner {
+  font-size: 2.75rem !important;
+  font-weight: 900 !important;
+  color: var(--hp-primary) !important;
+  text-align: center !important;
+  height: 4.5rem !important;
+  line-height: 4.5rem !important;
+  width: 9rem !important;
+  font-variant-numeric: tabular-nums;
+  border: 2px solid var(--hp-border-strong) !important;
+  border-radius: var(--hp-radius-sm) !important;
+  background: #ffffff !important;
+}
+
+/* ============================================================
+   REVEAL — comparativo esperado x contado
+   ============================================================ */
+.hyperaRevealWrap {
+  padding: 2.5rem 1.75rem 2.75rem !important;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+.hyperaRevealCompare {
+  gap: 2rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+.hyperaRevealBox {
+  padding: 1.5rem 2rem;
+  background: var(--hp-bg-soft);
+  border: 1px solid var(--hp-border);
+  border-radius: var(--hp-radius);
+  min-width: 9rem;
+}
+.hyperaRevealLabel {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.hyperaRevealValue {
+  font-size: 3rem !important;
+  font-weight: 900 !important;
+  color: var(--hp-text) !important;
+  margin-top: 0.5rem !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.hyperaRevealOk { color: var(--hp-success) !important; }
+.hyperaRevealBad { color: var(--hp-warning) !important; }
+.hyperaRevealVs {
+  font-size: 1.5rem !important;
+  color: var(--hp-text-muted) !important;
+}
+.hyperaRevealMessage {
+  font-size: 1rem !important;
+  color: var(--hp-text-soft) !important;
+  text-align: center;
+  max-width: 32rem;
+  line-height: 1.5;
+  margin-top: 1rem !important;
+}
+.hyperaRevealActions {
+  gap: 0.85rem;
+  width: 100%;
+  margin-top: 1.5rem !important;
+}
+.hyperaDiff {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  padding: 0.35rem 1rem !important;
+}
+
+/* ============================================================
+   WAIT SUPERVISOR
+   ============================================================ */
+.hyperaWaitCard {
+  border: 2px solid var(--hp-warning) !important;
+  background: var(--hp-warning-light) !important;
+}
+.hyperaWaitWrap {
+  padding: 3rem 1.75rem !important;
+  width: 100%;
+  text-align: center;
+  gap: 0.75rem;
+}
+.hyperaWaitText {
+  font-size: 1rem !important;
+  color: var(--hp-text-soft) !important;
+  max-width: 30rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   BOX BY BOX
+   ============================================================ */
+.hyperaBoxCard {
+  border: 2px solid var(--hp-error) !important;
+  border-left-width: 5px !important;
+}
+.hyperaBoxWrap {
+  padding: 2.5rem 1.75rem 2.75rem !important;
+  width: 100%;
+  gap: 0.75rem;
+}
+.hyperaBoxCounter {
+  font-size: 4.5rem !important;
+  font-weight: 900 !important;
+  color: var(--hp-error) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* ============================================================
+   FOOTER ACTION BAR (botões no rodapé da Conference)
+   ============================================================ */
+.hyperaActionBar {
+  background: #ffffff !important;
+  border-top: 1px solid var(--hp-border) !important;
+  padding: 1rem 1.25rem !important;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  min-height: auto !important;
+}
+.hyperaActionBtn,
+.hyperaActionBtn .sapMBtnInner {
+  flex: 1 1 160px;
+  min-height: var(--hp-btn-h) !important;
+  height: var(--hp-btn-h) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  border-radius: var(--hp-radius-sm) !important;
+}
+.hyperaActionPrimary { flex: 2 1 220px; }
+
+/* ============================================================
+   PROGRESS INDICATOR
+   ============================================================ */
+.hyperaProgress {
+  width: 100% !important;
+}
+.hyperaProgress .sapMPI {
+  height: 2rem !important;
+  border-radius: var(--hp-radius-sm) !important;
+  overflow: hidden;
+}
+.hyperaProgress .sapMPIText {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+}
+
+/* ============================================================
+   MONITOR OPERACIONAL
+   ============================================================ */
+.hyperaMonitorPage .sapMPageBgSolid { background: var(--hp-bg) !important; }
+
+.hyperaKpiRow {
+  padding: 2rem 1.25rem 1rem !important;
+  gap: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.hyperaKpiCard {
+  flex: 1 1 190px;
+  min-width: 180px;
+  background: var(--hp-bg-card);
+  border: 1px solid var(--hp-border);
+  border-radius: var(--hp-radius);
+  padding: 1.65rem 1.5rem 1.85rem;
+  box-shadow: var(--hp-shadow);
+  text-align: left;
+  border-top: 4px solid var(--hp-border-strong);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  cursor: pointer;
+}
+.hyperaKpiCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hp-shadow-lg);
+}
+.hyperaKpiTotal { border-top-color: var(--hp-text-muted); }
+.hyperaKpiPending { border-top-color: #8a93a3; }
+.hyperaKpiProgress { border-top-color: var(--hp-primary); }
+.hyperaKpiSuccess { border-top-color: var(--hp-success); }
+.hyperaKpiAlert { border-top-color: var(--hp-warning); }
+.hyperaKpiCritical { border-top-color: var(--hp-error); }
+
+.hyperaKpiHeader {
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+  width: 100%;
+}
+.hyperaKpiIcon {
+  font-size: 1.15rem !important;
+  color: var(--hp-text-muted) !important;
+  flex-shrink: 0;
+}
+.hyperaKpiAlert .hyperaKpiIcon { color: var(--hp-warning) !important; }
+.hyperaKpiCritical .hyperaKpiIcon { color: var(--hp-error) !important; }
+.hyperaKpiSuccess .hyperaKpiIcon { color: var(--hp-success) !important; }
+.hyperaKpiProgress .hyperaKpiIcon { color: var(--hp-primary) !important; }
+.hyperaKpiPending .hyperaKpiIcon { color: #8a93a3 !important; }
+.hyperaKpiTotal .hyperaKpiIcon { color: var(--hp-text-muted) !important; }
+.hyperaKpiLabel {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text-soft) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hyperaKpiValue {
+  font-size: 2.5rem !important;
+  font-weight: 900 !important;
+  color: var(--hp-text) !important;
+  margin: 0 !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+  line-height: 1 !important;
+  display: block;
+}
+.hyperaKpiAlert .hyperaKpiValue { color: var(--hp-warning) !important; }
+.hyperaKpiCritical .hyperaKpiValue { color: var(--hp-error) !important; }
+.hyperaKpiSuccess .hyperaKpiValue { color: var(--hp-success) !important; }
+.hyperaKpiProgress .hyperaKpiValue { color: var(--hp-primary) !important; }
+
+.hyperaAlertPanel {
+  background: var(--hp-warning-light) !important;
+  border: 1px solid #ffd9a3 !important;
+  border-left: 5px solid var(--hp-warning) !important;
+  border-radius: var(--hp-radius) !important;
+  margin: 1.5rem 1.25rem !important;
+  box-shadow: var(--hp-shadow);
+  overflow: hidden;
+}
+.hyperaAlertPanel .sapMPanelContent {
+  padding: 0 !important;
+}
+.hyperaAlertPanel .hyperaList {
+  padding: 0.75rem !important;
+}
+.hyperaAlertToolbar {
+  background: transparent !important;
+  padding: 0 1.25rem !important;
+  min-height: 3.5rem !important;
+}
+.hyperaAlertToolbar .sapMObjStatus {
+  padding-right: 0.25rem !important;
+  white-space: nowrap !important;
+}
+.hyperaAlertToolbar .sapMObjStatusText {
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+}
+.hyperaAlertItem {
+  background: #ffffff !important;
+  border-color: #ffd9a3 !important;
+  margin-bottom: 0.6rem !important;
+}
+.hyperaAlertItem:last-child { margin-bottom: 0 !important; }
+.hyperaInlineBtn,
+.hyperaInlineBtn .sapMBtnInner {
+  height: 2.85rem !important;
+  min-height: 2.85rem !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  border-radius: var(--hp-radius-sm) !important;
+  padding: 0 1.25rem !important;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+/* Coletor / mobile pequeno */
+@media (max-width: 480px) {
+  html, body { font-size: 15px; }
+  .hyperaItemRow { padding: 1rem 1.1rem !important; gap: 0.6rem; }
+  .hyperaItemNumber { font-size: 1.05rem !important; }
+  .hyperaItemProduct { font-size: 0.95rem !important; }
+  .hyperaItemQtyText { font-size: 1.1rem !important; }
+  .hyperaItemQty { padding-left: 0.6rem; }
+
+  .hyperaStepBtn,
+  .hyperaStepBtn .sapMBtnInner {
+    width: 4rem !important;
+    height: 4rem !important;
+    min-width: 4rem !important;
+    min-height: 4rem !important;
+    font-size: 1.75rem !important;
+  }
+  .hyperaCountInput,
+  .hyperaCountInput .sapMInputBaseInner {
+    width: 7.5rem !important;
+    font-size: 2.25rem !important;
+    height: 4rem !important;
+    line-height: 4rem !important;
+  }
+  .hyperaInfoCell { flex: 1 1 100% !important; }
+  .hyperaActionBtn { flex: 1 1 100% !important; }
+  .hyperaScanBtn { min-width: 100% !important; }
+  .hyperaRevealCompare { gap: 1rem !important; }
+  .hyperaRevealBox { padding: 1.1rem 1.25rem; min-width: 7rem; }
+  .hyperaRevealValue { font-size: 2.5rem !important; }
+}
+
+/* Mobile médio */
+@media (min-width: 481px) and (max-width: 767px) {
+  .hyperaInfoCell { flex: 1 1 calc(50% - 0.75rem) !important; }
+}
+
+/* KPIs responsivos no Monitor */
+/* KPIs responsivos no Monitor */
+@media (max-width: 700px) {
+  .hyperaHeader {
+    padding: 0 0.75rem !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+  }
+
+  .hyperaHeaderTall {
+    height: 4rem !important;
+    min-height: 4rem !important;
+  }
+
+  .hyperaHeaderTitle {
+    font-size: 0.92rem !important;
+  }
+
+  .hyperaHeaderUserBadge {
+    max-width: 8.2rem !important;
+    padding: 0.42rem 0.65rem !important;
+    height: 2.45rem !important;
+  }
+
+  .hyperaHeaderUserBadge .sapMObjStatusText {
+    font-size: 0.8rem !important;
+  }
+
+  .hyperaKpiCard {
+    flex: 1 1 calc(50% - 0.5rem) !important;
+    min-width: 0;
+    padding: 1rem 0.95rem 1.15rem;
+  }
+
+  .hyperaKpiValue {
+    font-size: 1.9rem !important;
+  }
+
+  .hyperaKpiLabel {
+    font-size: 0.7rem !important;
+  }
+
+  .hyperaFiltersBlock {
+    padding: 0.85rem 1rem 0.35rem !important;
+  }
+
+  .hyperaChipsRow {
+    padding: 1rem !important;
+    gap: 0.6rem;
+  }
+
+  .hyperaChip > .sapMBtnInner {
+    height: 2.6rem !important;
+    min-height: 2.6rem !important;
+    line-height: 2.6rem !important;
+    padding: 0 1rem !important;
+    font-size: 0.88rem !important;
+  }
+
+  .hyperaList {
+    padding: 1rem !important;
+  }
+
+  .hyperaItemRow {
+    padding: 1rem !important;
+    gap: 0.8rem;
+  }
+
+  .hyperaItemMain {
+    width: 100%;
+  }
+
+  .hyperaItemQty {
+    width: 100%;
+    border-left: none !important;
+    border-top: 1px solid var(--hp-border);
+    padding: 0.8rem 0 0 0 !important;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hyperaItemQtyText {
+    font-size: 1.15rem !important;
+  }
+
+  .hyperaInlineBtn {
+    width: 100% !important;
+    margin-top: 0.5rem !important;
+  }
+}
+@media (max-width: 400px) {
+  .hyperaKpiCard {
+    flex: 1 1 100% !important;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .hyperaList { padding: 1.25rem 1.75rem !important; }
+  .hyperaListItem { margin-bottom: 1rem !important; }
+  .hyperaInfoCard,
+  .hyperaCounterCard,
+  .hyperaScanCard,
+  .hyperaRevealCard,
+  .hyperaWaitCard,
+  .hyperaBoxCard {
+    margin: 1.25rem 1.75rem !important;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  html, body { font-size: 17px; }
+
+  /* Container centralizado + padding lateral */
+  .hyperaShipmentsPage > section,
+  .hyperaConferencePage > section,
+  .hyperaMonitorPage > section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .hyperaList { padding: 2rem 0 !important; }
+  .hyperaInfoCard,
+  .hyperaCounterCard,
+  .hyperaScanCard,
+  .hyperaRevealCard,
+  .hyperaWaitCard,
+  .hyperaBoxCard,
+  .hyperaHistoryCard,
+  .hyperaAlertPanel {
+    margin: 1.75rem 0 !important;
+  }
+  .hyperaKpiRow { padding: 2rem 0 1rem !important; }
+  .hyperaChipsScroll {
+    margin: 0 -2.5rem !important;
+    padding: 0 2.5rem !important;
+  }
+  .hyperaSubHeader { padding: 1.75rem 0 !important; }
+
+  .hyperaStepBtn,
+  .hyperaStepBtn .sapMBtnInner {
+    width: 5rem !important;
+    height: 5rem !important;
+    min-width: 5rem !important;
+    min-height: 5rem !important;
+    font-size: 2.25rem !important;
+  }
+  .hyperaCountInput,
+  .hyperaCountInput .sapMInputBaseInner {
+    width: 10rem !important;
+    font-size: 3rem !important;
+    height: 5rem !important;
+    line-height: 5rem !important;
+  }
+  .hyperaRevealValue { font-size: 3.5rem !important; }
+  .hyperaBoxCounter { font-size: 5.5rem !important; }
+}
+
+/* Desktop XL */
+@media (min-width: 1440px) {
+  .hyperaShipmentsPage > section,
+  .hyperaConferencePage > section,
+  .hyperaMonitorPage > section {
+    max-width: 1440px;
+  }
+}
+
+/* ============================================================
+   v2.1 — Role cards (Login) + Chips (filtros)
+   ============================================================ */
+
+/* ----- LOGIN: cards de perfil (substitui o Select) ----- */
+.hyperaLoginIcon {
+  margin-bottom: 0.5rem !important;
+}
+.hyperaRoleCards {
+  width: 100% !important;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.hyperaRoleCard {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #ffffff;
+  border: 2px solid var(--hp-border);
+  border-radius: var(--hp-radius);
+  padding: 1.25rem 0.75rem;
+  cursor: pointer;
+  transition: all 180ms ease;
+  text-align: center;
+  user-select: none;
+}
+.hyperaRoleCard:hover {
+  border-color: var(--hp-border-strong);
+  background: var(--hp-bg-soft);
+  transform: translateY(-2px);
+}
+.hyperaRoleCardActive {
+  border-color: var(--hp-primary) !important;
+  background: var(--hp-primary-light) !important;
+  box-shadow: 0 0 0 4px rgba(0, 97, 168, 0.12), var(--hp-shadow);
+}
+.hyperaRoleCardActive .hyperaRoleLabel {
+  color: var(--hp-primary) !important;
+  font-weight: 800 !important;
+}
+.hyperaRoleCardActive .hyperaRoleIcon {
+  color: var(--hp-primary) !important;
+}
+.hyperaRoleIcon {
+  margin-bottom: 0.5rem !important;
+  transition: color 180ms ease;
+}
+.hyperaRoleLabel {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: var(--hp-text) !important;
+  display: block;
+}
+.hyperaRoleSub {
+  font-size: 0.78rem !important;
+  color: var(--hp-text-muted) !important;
+  margin-top: 0.15rem !important;
+  display: block;
+}
+.hyperaLoginBtn {
+  margin-top: 1.5rem !important;
+}
+
+/* ----- CHIPS HORIZONTAIS (filtros das listas) ----- */
+.hyperaChipsScroll {
+  background: #ffffff;
+  border-bottom: 1px solid var(--hp-border);
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 1px 3px rgba(15,28,46,0.04);
+}
+.hyperaChipsScroll > .sapMScrollContScroll {
+  padding: 0 !important;
+}
+.hyperaChipsRow {
+  padding: 1.5rem 1.75rem;
+  gap: 0.85rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  align-items: center;
+}
+
+.hyperaChip {
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+.hyperaChip > .sapMBtnInner {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  line-height: 3rem !important;
+  padding: 0 1.5rem !important;
+  border-radius: 999px !important;
+  background: var(--hp-bg-soft) !important;
+  border: 2px solid var(--hp-border) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--hp-text-soft) !important;
+  box-shadow: none !important;
+  transition: all 160ms ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+.hyperaChip > .sapMBtnInner:hover {
+  border-color: var(--hp-primary) !important;
+  background: var(--hp-primary-light) !important;
+  color: var(--hp-primary) !important;
+}
+.hyperaChip .sapMBtnContent,
+.hyperaChip .sapMBtnText,
+.hyperaChip .sapMBtnDefault {
+  font-weight: 600 !important;
+  color: inherit !important;
+  background: transparent !important;
+  border: none !important;
+  text-shadow: none !important;
+}
+
+/* Chip ativo — azul Hypera sólido com sombra */
+.hyperaChipActive > .sapMBtnInner {
+  background: var(--hp-primary) !important;
+  border-color: var(--hp-primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 6px 16px rgba(0, 97, 168, 0.30) !important;
+  transform: scale(1.02);
+}
+.hyperaChipActive > .sapMBtnInner:hover {
+  background: var(--hp-primary-dark) !important;
+  border-color: var(--hp-primary-dark) !important;
+  color: #ffffff !important;
+}
+.hyperaChipActive .sapMBtnContent,
+.hyperaChipActive .sapMBtnText {
+  color: #ffffff !important;
+}
+
+/* Esconde o IconTabBar antigo caso ainda exista em algum lugar */
+.hyperaFilterBar { display: none !important; }
+
+/* ----- LOGIN responsivo ----- */
+@media (max-width: 380px) {
+  .hyperaRoleCards { flex-direction: column !important; }
+  .hyperaRoleCard { width: 100%; }
+}
+/* ===== PATCH SHIPMENTS / HEADER ===== */
+
+.hyperaHeader {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--hp-border) !important;
+  min-height: 4.2rem !important;
+  height: 4.2rem !important;
+  padding: 0 1rem !important;
+  box-shadow: 0 2px 10px rgba(15, 28, 46, 0.05) !important;
+}
+
+.hyperaHeaderTall {
+  min-height: 4.2rem !important;
+  height: 4.2rem !important;
+}
+
+.hyperaHeaderTitle {
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+}
+
+.hyperaHeaderBtn .sapMBtnInner {
+  min-height: 2.5rem !important;
+  height: 2.5rem !important;
+  padding: 0 0.95rem !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  border: 1px solid var(--hp-border) !important;
+  color: var(--hp-text-soft) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(15, 28, 46, 0.05) !important;
+}
+
+.hyperaHeaderBtn .sapMBtnInner:hover {
+  background: var(--hp-primary-light) !important;
+  border-color: var(--hp-primary) !important;
+  color: var(--hp-primary) !important;
+}
+
+.hyperaHeaderUserBadge {
+  background: var(--hp-primary-light) !important;
+  border: 1px solid rgba(0, 97, 168, 0.22) !important;
+  border-radius: 999px !important;
+  padding: 0.45rem 0.85rem !important;
+  height: 2.55rem !important;
+}
+
+.hyperaFiltersBlock {
+  background: transparent !important;
+  padding: 1rem 1.25rem 0.5rem !important;
+  gap: 0.85rem !important;
+}
+
+body .hyperaSearchField .sapMSF,
+body .hyperaSearchField.sapMSF {
+  border-radius: 1rem !important;
+  border: 1px solid var(--hp-border) !important;
+  background: #ffffff !important;
+  height: 3rem !important;
+  min-height: 3rem !important;
+  box-shadow: 0 3px 12px rgba(15, 28, 46, 0.05) !important;
+}
+
+body .hyperaSearchField .sapMSFI {
+  padding-left: 0.95rem !important;
+}
+
+.hyperaFooterBar {
+  min-height: 2.75rem !important;
+}
+
+@media (max-width: 700px) {
+  .hyperaHeader {
+    padding: 0 0.75rem !important;
+    height: 4rem !important;
+    min-height: 4rem !important;
+  }
+
+  .hyperaHeaderTitle {
+    font-size: 0.92rem !important;
+  }
+
+  .hyperaHeaderUserBadge {
+    max-width: 8rem !important;
+    padding: 0.42rem 0.65rem !important;
+    height: 2.4rem !important;
+  }
+
+  .hyperaFiltersBlock {
+    padding: 0.85rem 1rem 0.35rem !important;
+  }
+
+  .hyperaChipsRow {
+    padding: 1rem !important;
+    gap: 0.6rem !important;
+  }
+
+  .hyperaChip > .sapMBtnInner {
+    height: 2.6rem !important;
+    min-height: 2.6rem !important;
+    padding: 0 1rem !important;
+    font-size: 0.88rem !important;
+  }
+
+  .hyperaList {
+    padding: 1rem !important;
+  }
+
+  .hyperaItemRow {
+    padding: 1rem !important;
+    gap: 0.8rem !important;
+  }
+
+  .hyperaItemMain {
+    width: 100%;
+  }
+
+  .hyperaItemQty {
+    width: 100%;
+    border-left: none !important;
+    border-top: 1px solid var(--hp-border) !important;
+    padding: 0.8rem 0 0 0 !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .hyperaItemQtyText {
+    font-size: 1.15rem !important;
+  }
+}
+/* ===== BOTÃO SAIR INVISÍVEL - HOTFIX FINAL ===== */
+.hyperaHeaderBtn,
+.hyperaHeaderBtn .sapMBtnInner,
+.hyperaHeaderBtn .sapMBtnInner.sapMBtnDefault {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.hyperaHeaderBtn .sapMBtnInner,
+.hyperaHeaderBtn .sapMBtnInner.sapMBtnDefault {
+  min-height: 2.2rem !important;
+  height: 2.2rem !important;
+  padding: 0 0.35rem !important;
+  border-radius: 0 !important;
+  color: var(--hp-text-soft) !important;
+  font-weight: 700 !important;
+}
+
+.hyperaHeaderBtn:hover,
+.hyperaHeaderBtn .sapMBtnInner:hover,
+.hyperaHeaderBtn .sapMBtnInner.sapMBtnDefault:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--hp-primary) !important;
+}
+
+.hyperaHeaderBtn .sapMBtnIcon {
+  color: inherit !important;
+  font-size: 1rem !important;
+}
+
+.hyperaHeaderBtn .sapMBtnContent {
+  padding-left: 0.2rem !important;
+}
+/* ===== HEADER MAIS LIMPO ===== */
+.hyperaHeader {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--hp-border) !important;
+  min-height: 4.4rem !important;
+  height: 4.4rem !important;
+  padding: 0 1.25rem !important;
+  box-shadow: 0 2px 12px rgba(15, 28, 46, 0.05) !important;
+}
+
+.hyperaHeaderTall {
+  min-height: 4.4rem !important;
+  height: 4.4rem !important;
+}
+
+.hyperaHeaderTitle {
+  font-size: 1.08rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+}
+/* ===== MONITOR TOP ACTIONS ===== */
+.hyperaKpiCardTop {
+  position: relative;
+}
+
+.hyperaKpiTopRow {
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+.hyperaTopActions {
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.hyperaTopActions .hyperaBellBtn .sapMBtnInner {
+  width: 2.4rem !important;
+  height: 2.4rem !important;
+  min-width: 2.4rem !important;
+  min-height: 2.4rem !important;
+  border-radius: 0.85rem !important;
+}
+
+.hyperaTopActions .hyperaHeaderUserBadge {
+  height: 2.4rem !important;
+  padding: 0.35rem 0.75rem !important;
+  max-width: 8.5rem !important;
+}
+
+@media (max-width: 700px) {
+  .hyperaTopActions {
+    gap: 0.35rem;
+  }
+
+  .hyperaTopActions .hyperaBellBtn .sapMBtnInner {
+    width: 2.2rem !important;
+    height: 2.2rem !important;
+    min-width: 2.2rem !important;
+    min-height: 2.2rem !important;
+  }
+
+  .hyperaTopActions .hyperaHeaderUserBadge {
+    height: 2.2rem !important;
+    padding: 0.3rem 0.6rem !important;
+    max-width: 7.5rem !important;
+  }
+}
+/* ===== SHIPMENTS: USER BADGE + CHIPS PREMIUM ===== */
+
+/* Badge do usuário no topo */
+.hyperaHeaderUserBadge {
+  background: linear-gradient(135deg, #eef6fd 0%, #dfeefb 100%) !important;
+  border: 1px solid rgba(0, 97, 168, 0.18) !important;
+  border-radius: 999px !important;
+  padding: 0.45rem 0.9rem 0.45rem 0.8rem !important;
+  height: 2.65rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  box-shadow: 0 6px 16px rgba(0, 97, 168, 0.08) !important;
+  backdrop-filter: blur(6px);
+}
+
+.hyperaHeaderUserBadge .sapMObjStatusInner {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+.hyperaHeaderUserBadge .sapMObjStatusIcon {
+  color: var(--hp-primary) !important;
+  font-size: 0.95rem !important;
+  margin-right: 0.2rem !important;
+}
+
+.hyperaHeaderUserBadge .sapMObjStatusText {
+  color: var(--hp-primary) !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em;
+}
+
+/* Barra dos chips */
+.hyperaChipsScroll {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 1.5rem 0.5rem !important;
+}
+
+.hyperaChipsScroll > .sapMScrollContScroll {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 28, 46, 0.08) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 8px 24px rgba(15, 28, 46, 0.06) !important;
+}
+
+.hyperaChipsRow {
+  padding: 0.95rem 1rem !important;
+  gap: 0.7rem !important;
+  align-items: center !important;
+  min-height: 4.4rem;
+}
+
+/* Chips normais */
+.hyperaChip > .sapMBtnInner {
+  height: 2.8rem !important;
+  min-height: 2.8rem !important;
+  padding: 0 1.15rem !important;
+  border-radius: 999px !important;
+  background: #f8fafc !important;
+  border: 1px solid #dde7f1 !important;
+  color: #334155 !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  transition: all 0.16s ease !important;
+}
+
+.hyperaChip > .sapMBtnInner:hover {
+  background: #eef6fd !important;
+  border-color: rgba(0, 97, 168, 0.35) !important;
+  color: var(--hp-primary) !important;
+  transform: translateY(-1px);
+}
+
+/* Chip ativo */
+.hyperaChipActive > .sapMBtnInner {
+  background: linear-gradient(135deg, #0b74c7 0%, #005ea8 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(0, 97, 168, 0.22) !important;
+}
+
+.hyperaChipActive > .sapMBtnInner:hover {
+  background: linear-gradient(135deg, #0a6ab4 0%, #004f8d 100%) !important;
+  color: #ffffff !important;
+}
+
+.hyperaChipActive .sapMBtnContent,
+.hyperaChipActive .sapMBtnText {
+  color: #ffffff !important;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+  .hyperaHeaderUserBadge {
+    height: 2.35rem !important;
+    padding: 0.35rem 0.7rem !important;
+    box-shadow: 0 4px 12px rgba(0, 97, 168, 0.08) !important;
+  }
+
+  .hyperaHeaderUserBadge .sapMObjStatusText {
+    font-size: 0.82rem !important;
+  }
+
+  .hyperaChipsScroll {
+    padding: 0 1rem 0.5rem !important;
+  }
+
+  .hyperaChipsRow {
+    padding: 0.8rem !important;
+    min-height: 4rem;
+    gap: 0.55rem !important;
+  }
+
+  .hyperaChip > .sapMBtnInner {
+    height: 2.55rem !important;
+    min-height: 2.55rem !important;
+    padding: 0 1rem !important;
+    font-size: 0.86rem !important;
+  }
+}
+.hyperaHeaderRight {
+  padding-right: 0.35rem !important;
+}
+/* ===== MOBILE CLEAN FINAL ===== */
+
+/* Header mais limpo */
+.hyperaHeader {
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(15, 28, 46, 0.08) !important;
+  min-height: 4rem !important;
+  height: 4rem !important;
+  padding: 0 0.9rem !important;
+  box-shadow: 0 2px 10px rgba(15, 28, 46, 0.04) !important;
+}
+
+.hyperaHeaderTall {
+  min-height: 4rem !important;
+  height: 4rem !important;
+}
+
+.hyperaHeaderTitle {
+  font-size: 0.98rem !important;
+  font-weight: 800 !important;
+  color: var(--hp-text) !important;
+}
+
+/* Botão sair simples */
+.hyperaHeaderBtn,
+.hyperaHeaderBtn .sapMBtnInner,
+.hyperaHeaderBtn .sapMBtnInner.sapMBtnDefault {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.hyperaHeaderBtn .sapMBtnInner,
+.hyperaHeaderBtn .sapMBtnInner.sapMBtnDefault {
+  min-height: 2.2rem !important;
+  height: 2.2rem !important;
+  padding: 0 0.35rem !important;
+  border-radius: 0 !important;
+  color: var(--hp-text-soft) !important;
+  font-weight: 700 !important;
+}
+
+.hyperaHeaderBtn .sapMBtnIcon {
+  color: inherit !important;
+  font-size: 1rem !important;
+}
+
+/* Filtros e busca */
+.hyperaFiltersBlock {
+  background: transparent !important;
+  padding: 0.9rem 1rem 0.45rem !important;
+  gap: 0.75rem !important;
+}
+
+body .hyperaSearchField .sapMSF,
+body .hyperaSearchField.sapMSF {
+  border-radius: 1rem !important;
+  border: 1px solid rgba(15, 28, 46, 0.08) !important;
+  background: #ffffff !important;
+  height: 3rem !important;
+  min-height: 3rem !important;
+  box-shadow: 0 4px 14px rgba(15, 28, 46, 0.05) !important;
+}
+
+body .hyperaSearchField .sapMSFI {
+  padding-left: 0.95rem !important;
+  font-size: 0.95rem !important;
+}
+
+body .hyperaFilterSelect .sapMSlt,
+body .hyperaFilterSelect.sapMSlt {
+  border-radius: 1rem !important;
+  border: 1px solid rgba(15, 28, 46, 0.08) !important;
+  background: #ffffff !important;
+  height: 3rem !important;
+  min-height: 3rem !important;
+  box-shadow: 0 4px 14px rgba(15, 28, 46, 0.04) !important;
+}
+
+/* Barra de chips mais bonita */
+.hyperaChipsScroll {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 1rem 0.45rem !important;
+}
+
+.hyperaChipsScroll > .sapMScrollContScroll {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 28, 46, 0.08) !important;
+  border-radius: 1.15rem !important;
+  box-shadow: 0 8px 20px rgba(15, 28, 46, 0.05) !important;
+}
+
+.hyperaChipsRow {
+  padding: 0.75rem !important;
+  gap: 0.55rem !important;
+  min-height: 3.7rem;
+  align-items: center !important;
+}
+
+.hyperaChip > .sapMBtnInner {
+  height: 2.5rem !important;
+  min-height: 2.5rem !important;
+  padding: 0 0.95rem !important;
+  border-radius: 999px !important;
+  background: #f8fafc !important;
+  border: 1px solid #dde7f1 !important;
+  color: #334155 !important;
+  font-size: 0.84rem !important;
+  font-weight: 700 !important;
+}
+
+.hyperaChipActive > .sapMBtnInner {
+  background: linear-gradient(135deg, #0b74c7 0%, #005ea8 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(0, 97, 168, 0.22) !important;
+}
+
+/* Lista e cards */
+.hyperaList {
+  padding: 1rem !important;
+  background: var(--hp-bg) !important;
+}
+
+.hyperaListItem {
+  border-radius: 1rem !important;
+  border: 1px solid rgba(15, 28, 46, 0.08) !important;
+  box-shadow: 0 8px 20px rgba(15, 28, 46, 0.05) !important;
+  margin-bottom: 1rem !important;
+}
+
+.hyperaItemRow {
+  padding: 1rem !important;
+  gap: 0.8rem !important;
+}
+
+.hyperaItemMain {
+  width: 100%;
+}
+
+.hyperaItemNumber {
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+}
+
+.hyperaItemProduct {
+  font-size: 0.98rem !important;
+  margin-top: 0.35rem !important;
+}
+
+.hyperaItemMeta {
+  margin-top: 0.65rem !important;
+}
+
+.hyperaItemMetaText,
+.hyperaItemMetaSep,
+.hyperaItemMetaTextStrong {
+  font-size: 0.8rem !important;
+}
+
+.hyperaItemQty {
+  width: 100%;
+  min-width: 0 !important;
+  border-left: none !important;
+  border-top: 1px solid var(--hp-border) !important;
+  padding: 0.85rem 0 0 0 !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+.hyperaItemQtyText {
+  font-size: 1.35rem !important;
+}
+
+.hyperaItemQtyLabel {
+  font-size: 0.72rem !important;
+}
+
+/* KPIs do monitor */
+.hyperaKpiRow {
+  padding: 1rem !important;
+  gap: 0.9rem !important;
+}
+
+.hyperaKpiCard {
+  flex: 1 1 100% !important;
+  min-width: 0 !important;
+  padding: 1rem !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 20px rgba(15, 28, 46, 0.05) !important;
+}
+
+.hyperaKpiValue {
+  font-size: 2rem !important;
+}
+
+.hyperaKpiLabel {
+  font-size: 0.72rem !important;
+}
+
+/* Alertas e botões inline */
+.hyperaInlineBtn {
+  width: 100% !important;
+  margin-top: 0.55rem !important;
+}
+
+/* Footer mais leve */
+.hyperaFooterBar {
+  min-height: 2.6rem !important;
+  padding: 0 0.8rem !important;
+}
+
+.hyperaFooterText {
+  font-size: 0.75rem !important;
+}
+
+/* Ajuste extra para telas maiores que celular mas ainda pequenas */
+@media (min-width: 481px) and (max-width: 767px) {
+  .hyperaKpiCard {
+    flex: 1 1 calc(50% - 0.5rem) !important;
+  }
+}

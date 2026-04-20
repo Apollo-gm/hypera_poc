@@ -1,0 +1,396 @@
+<mvc:View
+  controllerName="hypera.conferencia.ui.controller.Conference"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page class="hyperaPage" showHeader="false">
+    <customHeader>
+      <Bar class="hyperaHeaderBar">
+        <contentLeft>
+          <Button
+            icon="sap-icon://nav-back"
+            type="Transparent"
+            press=".onNavBack"
+            class="hyperaHeaderBtn" />
+        </contentLeft>
+
+        <contentMiddle>
+          <VBox>
+            <Title text="{shipmentNumber}" level="H3" class="hyperaHeaderTitle" />
+            <Text text="{dock} • {carrier}" class="hyperaHeaderSub" />
+          </VBox>
+        </contentMiddle>
+
+        <contentRight>
+          <ObjectStatus
+            class="hyperaStatusChip"
+            text="{
+              path: 'status',
+              formatter: '.formatter.statusText'
+            }"
+            state="{
+              path: 'status',
+              formatter: '.formatter.statusState'
+            }"
+            icon="{
+              path: 'status',
+              formatter: '.formatter.statusIcon'
+            }" />
+        </contentRight>
+      </Bar>
+    </customHeader>
+
+    <content>
+      <Panel class="hyperaInfoCard" backgroundDesign="Solid" expandable="false">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="{product}" level="H3" class="hyperaCardTitle" />
+            <ToolbarSpacer />
+            <Text text="Tentativa {phaseModel>/displayAttempt} de 3" class="hyperaCardTag" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <HBox wrap="Wrap" class="hyperaInfoGrid">
+            <VBox class="hyperaInfoCell">
+              <Label text="Pedido" class="hyperaInfoLabel" />
+              <Text text="{orderNumber}" class="hyperaInfoValue" />
+            </VBox>
+            <VBox class="hyperaInfoCell">
+              <Label text="Documento Transporte" class="hyperaInfoLabel" />
+              <Text text="{transportDocument}" class="hyperaInfoValue" />
+            </VBox>
+            <VBox class="hyperaInfoCell">
+              <Label text="Placa" class="hyperaInfoLabel" />
+              <Text text="{carrierPlate}" class="hyperaInfoValue" />
+            </VBox>
+            <VBox class="hyperaInfoCell">
+              <Label text="Doca" class="hyperaInfoLabel" />
+              <Text text="{dock}" class="hyperaInfoValue" />
+            </VBox>
+            <VBox class="hyperaInfoCell">
+              <Label text="Transportadora" class="hyperaInfoLabel" />
+              <Text text="{carrier}" class="hyperaInfoValue" />
+            </VBox>
+            <VBox class="hyperaInfoCell">
+              <Label text="Destino" class="hyperaInfoLabel" />
+              <Text text="{destination}" class="hyperaInfoValue" />
+            </VBox>
+          </HBox>
+        </content>
+      </Panel>
+
+      <Panel
+        class="hyperaHistoryCard"
+        backgroundDesign="Solid"
+        expandable="true"
+        expanded="false"
+        visible="{= ${history}.length &gt; 0 }">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="Histórico de tentativas" level="H3" class="hyperaCardTitle" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <List
+            items="{history}"
+            class="hyperaHistoryList"
+            backgroundDesign="Transparent"
+            showSeparators="Inner">
+            <CustomListItem class="hyperaHistoryItem">
+              <HBox
+                alignItems="Center"
+                justifyContent="SpaceBetween"
+                wrap="Wrap"
+                class="hyperaHistoryRow">
+                <HBox alignItems="Center" wrap="Wrap">
+                  <VBox class="hyperaHistoryNum">
+                    <Text text="#{n}" class="hyperaHistoryAttempt" />
+                  </VBox>
+                  <VBox class="hyperaHistoryInfo">
+                    <Text text="{user}" class="hyperaHistoryUser" />
+                    <Text text="{ts}" class="hyperaHistoryTs" />
+                  </VBox>
+                </HBox>
+
+                <VBox alignItems="End">
+                  <Text text="{qty}" class="hyperaHistoryQty" />
+                  <ObjectStatus
+                    text="{
+                      path: 'result',
+                      formatter: '.formatter.statusText'
+                    }"
+                    state="{
+                      path: 'result',
+                      formatter: '.formatter.statusState'
+                    }"
+                    class="hyperaStatusChip" />
+                </VBox>
+              </HBox>
+            </CustomListItem>
+          </List>
+        </content>
+      </Panel>
+
+      <Panel
+        class="hyperaScanCard"
+        backgroundDesign="Solid"
+        expandable="false"
+        visible="{= ${phaseModel>/phase} === 'SCAN' }">
+        <headerToolbar>
+          <Toolbar>
+            <core:Icon src="sap-icon://bar-code" color="#0a6ed1" />
+            <Title text="Leitura de Etiquetas" level="H3" class="hyperaCardTitle" />
+            <ToolbarSpacer />
+            <Text text="{phaseModel>/scannedCount} / {phaseModel>/totalPallets}" class="hyperaScanCount" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <VBox class="hyperaScanWrap" alignItems="Center">
+            <Text text="Escaneie as etiquetas de todos os paletes antes de iniciar a contagem" class="hyperaScanInstructions" />
+
+            <Button
+              text=" Escanear etiqueta"
+              type="Emphasized"
+              press=".onScanPallet"
+              class="hyperaScanBtn sapUiSmallMarginTop"
+              enabled="{= ${phaseModel>/scannedCount} &lt; ${phaseModel>/totalPallets} }" />
+
+            <ProgressIndicator
+              percentValue="{phaseModel>/scanProgress}"
+              displayValue="{phaseModel>/scannedCount} / {phaseModel>/totalPallets} paletes"
+              showValue="true"
+              state="Information"
+              class="hyperaProgress sapUiSmallMarginTopBottom"
+              width="100%"
+              height="1.75rem" />
+
+            <List
+              items="{path: 'pallets'}"
+              backgroundDesign="Transparent"
+              class="hyperaPalletList"
+              showSeparators="None">
+              <CustomListItem class="hyperaPalletItem">
+                <HBox alignItems="Center" class="hyperaPalletRow">
+                  <core:Icon
+                    src="{= ${scanned} ? 'sap-icon://accept' : 'sap-icon://pending' }"
+                    color="{= ${scanned} ? '#107e3e' : '#bbbbbb' }"
+                    class="hyperaPalletIcon" />
+                  <VBox class="hyperaPalletInfo">
+                    <Text text="{tag}" class="hyperaPalletTag" />
+                    <HBox alignItems="Center" class="hyperaPalletMeta">
+                      <Text text="{barcode}" class="hyperaPalletBarcode" />
+                      <Text text=" • Lote " class="hyperaPalletBarcode" />
+                      <Text text="{lot}" class="hyperaPalletLot" />
+                    </HBox>
+                  </VBox>
+                  <ToolbarSpacer />
+                  <ObjectStatus
+                    text="{= ${scanned} ? 'Lido' : 'Pendente' }"
+                    state="{= ${scanned} ? 'Success' : 'None' }" />
+                </HBox>
+              </CustomListItem>
+            </List>
+
+            <Button
+              text="Iniciar contagem cega"
+              type="Accept"
+              icon="sap-icon://begin"
+              press=".onStartBlindCount"
+              class="hyperaPrimaryBtn sapUiMediumMarginTop"
+              enabled="{= ${phaseModel>/scannedCount} === ${phaseModel>/totalPallets} }"
+              width="100%" />
+          </VBox>
+        </content>
+      </Panel>
+
+      <Panel
+        class="hyperaCounterCard hyperaBlindCard"
+        backgroundDesign="Solid"
+        expandable="false"
+        visible="{= ${phaseModel>/phase} === 'COUNT' }">
+        <headerToolbar>
+          <Toolbar>
+            <core:Icon src="sap-icon://hide" color="#df6e0c" />
+            <Title text="Contagem CEGA" level="H3" class="hyperaCardTitle" />
+            <ToolbarSpacer />
+            <ObjectStatus text="Tentativa {phaseModel>/displayAttempt}" state="Warning" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <VBox class="hyperaCounterWrap" alignItems="Center">
+            <Text text="Conte fisicamente todos os volumes" class="hyperaBlindHint" />
+            <Text text="A quantidade esperada NÃO será exibida" class="hyperaBlindHint hyperaBlindHintBold" />
+            <Text text="Quantidade contada" class="hyperaCounterLabel sapUiMediumMarginTop" />
+
+            <HBox alignItems="Center" justifyContent="Center" class="hyperaStepper">
+              <Button
+                icon="sap-icon://less"
+                press=".onDecrement"
+                class="hyperaStepBtn"
+                type="Transparent" />
+              <Input
+                id="countInput"
+                value="{phaseModel>/blindCount}"
+                type="Number"
+                textAlign="Center"
+                class="hyperaCountInput" />
+              <Button
+                icon="sap-icon://add"
+                press=".onIncrement"
+                class="hyperaStepBtn"
+                type="Transparent" />
+            </HBox>
+
+            <Button
+              text="Confirmar contagem"
+              type="Emphasized"
+              icon="sap-icon://accept"
+              press=".onConfirmBlindCount"
+              class="hyperaPrimaryBtn sapUiMediumMarginTop"
+              width="100%" />
+          </VBox>
+        </content>
+      </Panel>
+
+      <Panel
+        class="hyperaRevealCard"
+        backgroundDesign="Solid"
+        expandable="false"
+        visible="{= ${phaseModel>/phase} === 'REVEAL' }">
+        <headerToolbar>
+          <Toolbar>
+            <core:Icon
+              src="{= ${phaseModel>/revealMatch} ? 'sap-icon://accept' : 'sap-icon://warning' }"
+              color="{= ${phaseModel>/revealMatch} ? '#107e3e' : '#df6e0c' }" />
+            <Title
+              text="{= ${phaseModel>/revealMatch} ? 'Contagem aprovada' : 'Divergência identificada' }"
+              level="H3"
+              class="hyperaCardTitle" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <VBox class="hyperaRevealWrap" alignItems="Center">
+            <HBox alignItems="Center" justifyContent="Center" class="hyperaRevealCompare" wrap="Wrap">
+              <VBox alignItems="Center" class="hyperaRevealBox">
+                <Text text="Esperado" class="hyperaRevealLabel" />
+                <Title text="{expectedQuantity}" level="H1" class="hyperaRevealValue" />
+              </VBox>
+
+              <core:Icon src="sap-icon://horizontal-bar-chart" class="hyperaRevealVs" />
+
+              <VBox alignItems="Center" class="hyperaRevealBox">
+                <Text text="Contado" class="hyperaRevealLabel" />
+                <Title
+                  text="{phaseModel>/blindCount}"
+                  level="H1"
+                  class="{= ${phaseModel>/revealMatch} ? 'hyperaRevealValue hyperaRevealOk' : 'hyperaRevealValue hyperaRevealBad' }" />
+              </VBox>
+            </HBox>
+
+            <ObjectStatus
+              text="Diferença: {phaseModel>/revealDiff}"
+              state="{= ${phaseModel>/revealMatch} ? 'Success' : 'Warning' }"
+              class="hyperaDiff sapUiSmallMarginTop" />
+
+            <Text
+              text="{phaseModel>/revealMessage}"
+              class="hyperaRevealMessage sapUiSmallMarginTop" />
+
+            <HBox class="hyperaRevealActions sapUiMediumMarginTop" wrap="Wrap" justifyContent="Center">
+              <Button
+                text="Recontar"
+                type="Emphasized"
+                icon="sap-icon://refresh"
+                press=".onRecount"
+                class="hyperaPrimaryBtn"
+                visible="{= !${phaseModel>/revealMatch} &amp;&amp; ${phaseModel>/displayAttempt} &lt; 2 }" />
+
+              <Button
+                text="Aguardar supervisor"
+                type="Reject"
+                icon="sap-icon://employee-pane"
+                press=".onWaitSupervisor"
+                class="hyperaPrimaryBtn"
+                visible="{= !${phaseModel>/revealMatch} &amp;&amp; ${phaseModel>/displayAttempt} === 2 }" />
+
+              <Button
+                text="Voltar para a lista"
+                type="Default"
+                icon="sap-icon://list"
+                press=".onNavBack"
+                class="hyperaPrimaryBtn"
+                visible="{= ${phaseModel>/revealMatch} }" />
+            </HBox>
+          </VBox>
+        </content>
+      </Panel>
+
+      <Panel
+        class="hyperaWaitCard"
+        backgroundDesign="Solid"
+        expandable="false"
+        visible="{= ${phaseModel>/phase} === 'WAITING_SUP' }">
+        <content>
+          <VBox class="hyperaWaitWrap" alignItems="Center">
+            <core:Icon src="sap-icon://employee-pane" size="3rem" color="#df6e0c" />
+            <Title text="Aguardando supervisor" level="H2" class="sapUiSmallMarginTop" />
+            <Text text="Comunique o supervisor para liberar a 3ª contagem via Monitor Operacional." class="hyperaWaitText sapUiSmallMarginTop" />
+
+            <Button
+              text="Liberar 3ª contagem (Supervisor)"
+              type="Accept"
+              icon="sap-icon://approvals"
+              press=".onSupervisorRelease"
+              class="hyperaPrimaryBtn sapUiMediumMarginTop"
+              visible="{= ${app>/currentUser/role} === 'SUPERVISOR' }" />
+
+            <Button
+              text="Iniciar caixa por caixa"
+              type="Reject"
+              icon="sap-icon://inspect"
+              press=".onStartBoxByBox"
+              class="hyperaPrimaryBtn sapUiSmallMarginTop"
+              visible="{= ${app>/currentUser/role} === 'SUPERVISOR' &amp;&amp; ${attempts} &gt;= 3 }" />
+          </VBox>
+        </content>
+      </Panel>
+
+      <Panel
+        class="hyperaBoxCard"
+        backgroundDesign="Solid"
+        expandable="false"
+        visible="{= ${phaseModel>/phase} === 'BOX_BY_BOX' }">
+        <headerToolbar>
+          <Toolbar>
+            <core:Icon src="sap-icon://inspect" color="#bb0000" />
+            <Title text="Conferência caixa a caixa" level="H3" class="hyperaCardTitle" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <VBox class="hyperaBoxWrap" alignItems="Center">
+            <Text text="Escaneie cada caixa individualmente" class="hyperaBlindHint" />
+            <Title text="{phaseModel>/boxCount}" level="H1" class="hyperaBoxCounter sapUiSmallMarginTop" />
+            <Text text="caixas escaneadas" class="hyperaInfoLabel" />
+
+            <Button
+              text=" Escanear caixa"
+              type="Emphasized"
+              press=".onScanBox"
+              class="hyperaScanBtn sapUiMediumMarginTop" />
+
+            <Button
+              text="Finalizar e marcar como aprovada"
+              type="Accept"
+              icon="sap-icon://accept"
+              press=".onFinishBoxByBox"
+              class="hyperaPrimaryBtn sapUiSmallMarginTop"
+              enabled="{= ${phaseModel>/boxCount} &gt; 0 &amp;&amp; ${app>/currentUser/role} === 'SUPERVISOR' }"
+              width="100%" />
+          </VBox>
+        </content>
+      </Panel>
+    </content>
+  </Page>
+</mvc:View>

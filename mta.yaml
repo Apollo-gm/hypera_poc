@@ -1,0 +1,136 @@
+_schema-version: 3.3.0
+ID: hypera-conferencia
+version: 1.0.0
+description: POC Hypera - Conferência de Embarque
+
+parameters:
+  enable-parallel-deployments: true
+
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install
+        - npx cds build --production
+
+modules:
+  - name: hypera-conferencia-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 512M
+      disk-quota: 1024M
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: hypera-conferencia-auth
+      - name: hypera-conferencia-db
+
+  - name: hypera-conferencia-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: hypera-conferencia-db
+
+  - name: hypera-conferencia-ui
+    type: html5
+    path: app/conferencia-ui
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npx ui5 build --config ui5.yaml --clean-dest --dest dist
+      build-result: dist
+      supported-platforms: []
+
+  - name: hypera-conferencia-app-content
+    type: com.sap.application.content
+    path: .
+    build-parameters:
+      build-result: resources
+      requires:
+        - name: hypera-conferencia-ui
+          artifacts:
+            - hyperaconferenciaui.zip
+          target-path: resources/
+    requires:
+      - name: hypera-conferencia-html5-repo-host
+        parameters:
+          content-target: true
+      - name: hypera-conferencia-destination
+        parameters:
+          content-target: true
+      - name: hypera-conferencia-auth
+        parameters:
+          service-key:
+            name: hypera-conferencia-auth-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: hypera-conferencia-auth
+              ServiceInstanceName: hypera-conferencia-auth
+              ServiceKeyName: hypera-conferencia-auth-key
+              Authentication: OAuth2UserTokenExchange
+            - Name: hypera-conferencia-html5-repo-host
+              ServiceInstanceName: hypera-conferencia-html5-repo-host
+              ServiceKeyName: hypera-conferencia-html5-repo-host-key
+          existing_destinations_policy: update
+
+resources:
+  - name: hypera-conferencia-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  - name: hypera-conferencia-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      service-name: hypera-conferencia-auth
+
+  - name: hypera-conferencia-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      service-name: hypera-conferencia-destination
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: hypera-conferencia-srv-api
+                URL: ~{srv-api/srv-url}
+                Type: HTTP
+                ProxyType: Internet
+                Authentication: OAuth2UserTokenExchange
+                TokenServiceInstanceName: hypera-conferencia-auth
+                TokenServiceKeyName: hypera-conferencia-auth-key
+                HTML5.ForwardAuthToken: true
+    requires:
+      - name: srv-api
+
+  - name: hypera-conferencia-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      service-name: hypera-conferencia-html5-repo-host
+
+  - name: hypera-conferencia-html5-repo-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+      service-name: hypera-conferencia-html5-repo-runtime

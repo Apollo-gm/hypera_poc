@@ -1,0 +1,242 @@
+<mvc:View
+  controllerName="hypera.conferencia.ui.controller.Monitor"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page class="hyperaPage" title="Monitor Operacional">
+    <customHeader>
+      <Bar class="hyperaHeaderBar">
+        <contentLeft>
+          <Button
+            text="Sair"
+            icon="sap-icon://log"
+            type="Transparent"
+            press=".onLogout"
+            class="hyperaHeaderBtn" />
+        </contentLeft>
+
+        <contentMiddle>
+          <VBox>
+            <Title text="Monitor Operacional" level="H3" class="hyperaHeaderTitle" />
+            <Text text="{app>/currentUser/name}" class="hyperaHeaderSub" />
+          </VBox>
+        </contentMiddle>
+
+        <contentRight>
+          <HBox />
+        </contentRight>
+      </Bar>
+    </customHeader>
+
+    <content>
+      <HBox class="hyperaKpiRow" wrap="Wrap">
+        <VBox class="hyperaKpiCard hyperaKpiCardTop hyperaKpiTotal">
+          <HBox justifyContent="SpaceBetween" alignItems="Start" class="hyperaKpiTopRow">
+            <HBox class="hyperaKpiHeader" alignItems="Center">
+              <core:Icon src="sap-icon://product" class="hyperaKpiIcon" />
+              <Text text="Total" class="hyperaKpiLabel" />
+            </HBox>
+
+            <HBox alignItems="Center" class="hyperaTopActions">
+              <Button
+                id="bellBtn"
+                icon="sap-icon://bell"
+                type="Transparent"
+                press=".onBellPress"
+                class="hyperaBellBtn"
+                tooltip="Ações pendentes" />
+
+              <ObjectStatus
+                text="{app>/currentUser/name}"
+                icon="sap-icon://employee"
+                class="hyperaHeaderUserBadge" />
+            </HBox>
+          </HBox>
+
+          <Title text="{monitor>/total}" level="H1" class="hyperaKpiValue" />
+        </VBox>
+
+        <VBox class="hyperaKpiCard hyperaKpiPending">
+          <HBox class="hyperaKpiHeader" alignItems="Center">
+            <core:Icon src="sap-icon://pending" class="hyperaKpiIcon" />
+            <Text text="Pendentes" class="hyperaKpiLabel" />
+          </HBox>
+          <Title text="{monitor>/pending}" level="H1" class="hyperaKpiValue" />
+        </VBox>
+
+        <VBox class="hyperaKpiCard hyperaKpiProgress">
+          <HBox class="hyperaKpiHeader" alignItems="Center">
+            <core:Icon src="sap-icon://synchronize" class="hyperaKpiIcon" />
+            <Text text="Em andamento" class="hyperaKpiLabel" />
+          </HBox>
+          <Title text="{monitor>/inProgress}" level="H1" class="hyperaKpiValue" />
+        </VBox>
+
+        <VBox class="hyperaKpiCard hyperaKpiSuccess">
+          <HBox class="hyperaKpiHeader" alignItems="Center">
+            <core:Icon src="sap-icon://accept" class="hyperaKpiIcon" />
+            <Text text="Aprovadas" class="hyperaKpiLabel" />
+          </HBox>
+          <Title text="{monitor>/approved}" level="H1" class="hyperaKpiValue" />
+        </VBox>
+
+        <VBox class="hyperaKpiCard hyperaKpiAlert">
+          <HBox class="hyperaKpiHeader" alignItems="Center">
+            <core:Icon src="sap-icon://alert" class="hyperaKpiIcon" />
+            <Text text="Aguardando" class="hyperaKpiLabel" />
+          </HBox>
+          <Title text="{monitor>/awaitingSup}" level="H1" class="hyperaKpiValue" />
+        </VBox>
+
+        <VBox class="hyperaKpiCard hyperaKpiCritical">
+          <HBox class="hyperaKpiHeader" alignItems="Center">
+            <core:Icon src="sap-icon://inspect" class="hyperaKpiIcon" />
+            <Text text="Caixa a caixa" class="hyperaKpiLabel" />
+          </HBox>
+          <Title text="{monitor>/boxByBox}" level="H1" class="hyperaKpiValue" />
+        </VBox>
+      </HBox>
+
+      <Panel
+        class="hyperaAlertPanel"
+        backgroundDesign="Solid"
+        expandable="false"
+        visible="{= ${monitor>/awaitingSup} &gt; 0 }">
+        <headerToolbar>
+          <Toolbar class="hyperaAlertToolbar">
+            <core:Icon src="sap-icon://alert" color="#df6e0c" />
+            <Title text="Ações pendentes do supervisor" level="H3" class="hyperaCardTitle" />
+            <ToolbarSpacer />
+            <ObjectStatus text="{monitor>/awaitingSup} aguardando" state="Warning" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <List
+            items="{
+              path: '/Shipments',
+              filters: [{ path: 'status', operator: 'EQ', value1: 'AWAITING_SUP' }]
+            }"
+            class="hyperaList"
+            backgroundDesign="Transparent"
+            showSeparators="None">
+            <CustomListItem type="Active" press=".onItemPress" class="hyperaListItem hyperaAlertItem">
+              <HBox alignItems="Center" justifyContent="SpaceBetween" class="hyperaItemRow" wrap="Wrap">
+                <VBox class="hyperaItemMain">
+                  <HBox alignItems="Center">
+                    <Text text="{shipmentNumber}" class="hyperaItemNumber" />
+                    <Text text=" • {dock}" class="hyperaItemMetaText sapUiTinyMarginBegin" />
+                  </HBox>
+                  <Text text="{product}" class="hyperaItemProduct" />
+                  <HBox class="hyperaItemMeta" wrap="Wrap">
+                    <Text text="{carrier}" class="hyperaItemMetaText" />
+                    <Text text=" • " class="hyperaItemMetaSep" />
+                    <Text text="2 tentativas com divergência" class="hyperaItemMetaText" />
+                  </HBox>
+                </VBox>
+
+                <Button
+                  text="Liberar 3ª contagem"
+                  type="Emphasized"
+                  icon="sap-icon://approvals"
+                  press=".onReleaseThird"
+                  class="hyperaInlineBtn" />
+              </HBox>
+            </CustomListItem>
+          </List>
+        </content>
+      </Panel>
+
+      <ScrollContainer
+        horizontal="true"
+        vertical="false"
+        class="hyperaChipsScroll"
+        width="100%">
+        <HBox class="hyperaChipsRow">
+          <Button id="chipAll" text="Todas" press=".onChipPress" type="Emphasized" class="hyperaChip hyperaChipActive" />
+          <Button id="chipPending" text="Pendentes" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipInProgress" text="Em andamento" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipDivergent" text="Divergentes" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipAwaitingSup" text="Aguardando" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipBoxByBox" text="Caixa a caixa" press=".onChipPress" type="Default" class="hyperaChip" />
+          <Button id="chipApproved" text="Aprovadas" press=".onChipPress" type="Default" class="hyperaChip" />
+        </HBox>
+      </ScrollContainer>
+
+      <VBox class="hyperaFiltersBlock">
+        <SearchField
+          id="searchField"
+          width="100%"
+          placeholder="Buscar por remessa, produto, doca ou transportadora"
+          liveChange=".onSearch"
+          search=".onSearch"
+          class="hyperaSearchField" />
+      </VBox>
+
+      <List
+        id="monitorList"
+        items="{
+          path: '/Shipments',
+          sorter: { path: 'lastUpdate', descending: true }
+        }"
+        growing="true"
+        growingThreshold="40"
+        growingScrollToLoad="true"
+        noDataText="Nenhuma remessa encontrada"
+        class="hyperaList">
+
+        <CustomListItem type="Active" press=".onItemPress" class="hyperaListItem">
+          <HBox alignItems="Center" justifyContent="SpaceBetween" class="hyperaItemRow" wrap="Wrap">
+            <VBox class="hyperaItemMain">
+              <HBox alignItems="Center" wrap="Wrap">
+                <Text text="{shipmentNumber}" class="hyperaItemNumber" />
+                <ObjectStatus
+                  class="hyperaStatusChip sapUiTinyMarginBegin"
+                  text="{
+                    path: 'status',
+                    formatter: '.formatter.statusText'
+                  }"
+                  state="{
+                    path: 'status',
+                    formatter: '.formatter.statusState'
+                  }"
+                  icon="{
+                    path: 'status',
+                    formatter: '.formatter.statusIcon'
+                  }" />
+              </HBox>
+
+              <Text text="{product}" class="hyperaItemProduct" />
+
+              <HBox class="hyperaItemMeta" wrap="Wrap">
+                <Text text="{dock}" class="hyperaItemMetaText" />
+                <Text text=" • " class="hyperaItemMetaSep" />
+                <Text text="{carrier}" class="hyperaItemMetaText" />
+                <Text text=" • " class="hyperaItemMetaSep" />
+                <Text text="{carrierPlate}" class="hyperaItemMetaText" />
+              </HBox>
+            </VBox>
+
+            <VBox class="hyperaItemQty" alignItems="End">
+              <Text text="Tent. {attempts}/3" class="hyperaItemQtyLabel" />
+              <Text
+                text="{
+                  parts: ['countedQuantity', 'expectedQuantity'],
+                  formatter: '.formatter.progressText'
+                }"
+                class="hyperaItemQtyText" />
+            </VBox>
+          </HBox>
+        </CustomListItem>
+      </List>
+    </content>
+
+    <footer>
+      <Toolbar class="hyperaFooterBar">
+        <Text text="Atualização em tempo real • Mock local" class="hyperaFooterText" />
+        <ToolbarSpacer />
+      </Toolbar>
+    </footer>
+  </Page>
+</mvc:View>

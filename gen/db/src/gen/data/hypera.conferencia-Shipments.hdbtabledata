@@ -1,0 +1,51 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "HYPERA_CONFERENCIA_SHIPMENTS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "hypera.conferencia-Shipments.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "TRANSPORTDOCUMENT",
+          "SHIPMENTNUMBER",
+          "ORDERNUMBER",
+          "PRODUCT",
+          "CARRIER",
+          "CARRIERPLATE",
+          "DOCK",
+          "DESTINATION",
+          "EXPECTEDQUANTITY",
+          "COUNTEDQUANTITY",
+          "STATUS",
+          "PALLETTAG",
+          "NOTES"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "TRANSPORTDOCUMENT": "transportDocument",
+        "SHIPMENTNUMBER": "shipmentNumber",
+        "ORDERNUMBER": "orderNumber",
+        "PRODUCT": "product",
+        "CARRIER": "carrier",
+        "CARRIERPLATE": "carrierPlate",
+        "DOCK": "dock",
+        "DESTINATION": "destination",
+        "EXPECTEDQUANTITY": "expectedQuantity",
+        "COUNTEDQUANTITY": "countedQuantity",
+        "STATUS": "status",
+        "PALLETTAG": "palletTag",
+        "NOTES": "notes"
+      }
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+<mvc:View
+  controllerName="hypera.conferencia.ui.controller.Login"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  height="100%">
+
+  <Page id="loginPage" showHeader="false" backgroundDesign="Solid" class="hyperaLoginPage">
+    <content>
+      <FlexBox
+        height="100%"
+        alignItems="Center"
+        justifyContent="Center"
+        direction="Column"
+        class="hyperaLoginWrap">
+
+        <VBox class="hyperaLoginCard sapUiSmallMargin" alignItems="Center">
+
+          <core:Icon
+            src="sap-icon://shipping-status"
+            size="3rem"
+            color="#0061a8"
+            class="hyperaLoginIcon" />
+
+          <Title text="{i18n>appTitle}" level="H1" class="hyperaLoginTitle" />
+          <Text text="{i18n>loginSubtitle}" class="hyperaLoginSubtitle" />
+
+          <Label text="{i18n>loginUserLabel}" class="hyperaLabel" labelFor="userNameInput" />
+          <Input
+            id="userNameInput"
+            placeholder="{i18n>loginUserPlaceholder}"
+            width="100%"
+            class="hyperaInput"
+            submit=".onLogin" />
+
+          <Label text="{i18n>loginRoleLabel}" class="hyperaLabel" />
+
+          <HBox class="hyperaRoleCards" justifyContent="Center" wrap="Wrap" width="100%">
+            <VBox
+              id="roleColab"
+              class="hyperaRoleCard hyperaRoleCardActive"
+              alignItems="Center"
+              justifyContent="Center">
+              <core:Icon src="sap-icon://employee" size="2rem" color="#0061a8" class="hyperaRoleIcon" />
+              <Text text="{i18n>loginRoleColab}" class="hyperaRoleLabel" />
+              <Text text="Conferente" class="hyperaRoleSub" />
+            </VBox>
+            <VBox
+              id="roleSup"
+              class="hyperaRoleCard"
+              alignItems="Center"
+              justifyContent="Center">
+              <core:Icon src="sap-icon://manager" size="2rem" color="#6b7891" class="hyperaRoleIcon" />
+              <Text text="{i18n>loginRoleSup}" class="hyperaRoleLabel" />
+              <Text text="Acesso ao monitor" class="hyperaRoleSub" />
+            </VBox>
+          </HBox>
+
+          <Button
+            text="{i18n>loginButton}"
+            type="Emphasized"
+            press=".onLogin"
+            width="100%"
+            class="hyperaPrimaryBtn hyperaLoginBtn" />
+
+        </VBox>
+
+        <Text text="Hypera Pharma" class="hyperaFooter" />
+
+      </FlexBox>
+    </content>
+  </Page>
+</mvc:View>

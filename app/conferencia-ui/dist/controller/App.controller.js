@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/mvc/Controller"],function(e){"use strict";return e.extend("hypera.conferencia.ui.controller.App",{onInit:function(){if(window.performance&&window.performance.mark){window.performance.mark("hypera-app-ready")}}})});
+//# sourceMappingURL=App.controller.js.map
