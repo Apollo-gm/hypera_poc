@@ -14,7 +14,27 @@
         "uri": "localService/mockdata.json",
         "type": "JSON"
       }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "hypera-conferencia-display": {
+          "semanticObject": "hyperaConferencia",
+          "action": "display",
+          "title": "Conferência de Embarque",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
     }
+  },
+  "sap.cloud": {
+    "service": "hypera.conferencia"
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
   },
   "sap.ui": {
     "technology": "UI5",
