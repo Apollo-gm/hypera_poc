@@ -1,122 +1,133 @@
 {
-	"_version": "1.40.0",
-	"sap.app": {
-		"id": "hypera.conferencia.ui",
-		"type": "application",
-		"i18n": {
-			"bundleUrl": "i18n/i18n.properties",
-			"supportedLocales": [
-				""
-			]
-		},
-		"title": "{{appTitle}}",
-		"description": "{{appDescription}}",
-		"applicationVersion": {
-			"version": "1.0.0"
-		},
-		"dataSources": {
-			"mockData": {
-				"uri": "localService/mockdata.json",
-				"type": "JSON"
-			}
-		}
-	},
-	"sap.ui": {
-		"technology": "UI5",
-		"deviceTypes": {
-			"desktop": true,
-			"tablet": true,
-			"phone": true
-		}
-	},
-	"sap.ui5": {
-		"rootView": {
-			"viewName": "hypera.conferencia.ui.view.App",
-			"type": "XML",
-			"async": true,
-			"id": "app"
-		},
-		"dependencies": {
-			"minUI5Version": "1.120.0",
-			"libs": {
-				"sap.m": {},
-				"sap.ui.core": {},
-				"sap.f": {}
-			}
-		},
-		"models": {
-			"i18n": {
-				"type": "sap.ui.model.resource.ResourceModel",
-				"settings": {
-					"bundleName": "hypera.conferencia.ui.i18n.i18n",
-					"supportedLocales": [
-						""
-					]
-				}
-			},
-			"": {
-				"type": "sap.ui.model.json.JSONModel",
-				"dataSource": "mockData"
-			}
-		},
-		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
-		},
-		"routing": {
-			"config": {
-				"routerClass": "sap.m.routing.Router",
-				"viewType": "XML",
-				"viewPath": "hypera.conferencia.ui.view",
-				"controlId": "app",
-				"controlAggregation": "pages",
-				"async": true,
-				"transition": "slide"
-			},
-			"routes": [
-				{
-					"name": "login",
-					"pattern": "",
-					"target": "login"
-				},
-				{
-					"name": "shipments",
-					"pattern": "shipments",
-					"target": "shipments"
-				},
-				{
-					"name": "monitor",
-					"pattern": "monitor",
-					"target": "monitor"
-				},
-				{
-					"name": "conference",
-					"pattern": "conference/{shipmentId}",
-					"target": "conference"
-				}
-			],
-			"targets": {
-				"login": {
-					"viewName": "Login",
-					"viewLevel": 1
-				},
-				"shipments": {
-					"viewName": "ShipmentList",
-					"viewLevel": 2
-				},
-				"monitor": {
-					"viewName": "Monitor",
-					"viewLevel": 2
-				},
-				"conference": {
-					"viewName": "Conference",
-					"viewLevel": 3
-				}
-			}
-		},
-		"flexBundle": false
-	}
+  "_version": "1.40.0",
+  "sap.app": {
+    "id": "hypera.conferencia.ui",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mockData": {
+        "uri": "localService/mockdata.json",
+        "type": "JSON"
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "hypera-conferencia-display": {
+          "semanticObject": "hyperaConferencia",
+          "action": "display",
+          "title": "Conferência de Embarque",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.cloud": {
+    "service": "hypera.conferencia"
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "hypera.conferencia.ui.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "hypera.conferencia.ui.i18n.i18n"
+        }
+      },
+      "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "mockData"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "hypera.conferencia.ui.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "async": true,
+        "transition": "slide"
+      },
+      "routes": [
+        {
+          "name": "login",
+          "pattern": "",
+          "target": "login"
+        },
+        {
+          "name": "shipments",
+          "pattern": "shipments",
+          "target": "shipments"
+        },
+        {
+          "name": "monitor",
+          "pattern": "monitor",
+          "target": "monitor"
+        },
+        {
+          "name": "conference",
+          "pattern": "conference/{shipmentId}",
+          "target": "conference"
+        }
+      ],
+      "targets": {
+        "login": {
+          "viewName": "Login",
+          "viewLevel": 1
+        },
+        "shipments": {
+          "viewName": "ShipmentList",
+          "viewLevel": 2
+        },
+        "monitor": {
+          "viewName": "Monitor",
+          "viewLevel": 2
+        },
+        "conference": {
+          "viewName": "Conference",
+          "viewLevel": 3
+        }
+      }
+    }
+  }
 }

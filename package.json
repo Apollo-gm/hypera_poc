@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cds watch",
     "build:ui": "ui5 build --config app/conferencia-ui/ui5.yaml --clean-dest",
-    "serve:ui": "ui5 serve --config app/conferencia-ui/ui5.yaml -o index.html"
+    "serve:ui": "ui5 serve --config app/conferencia-ui/ui5.yaml -o index.html",
+    "build:mta": "rimraf resources mta_archives && mbt build"
   },
   "dependencies": {
     "@sap/cds": "^8",
@@ -14,7 +15,9 @@
   "devDependencies": {
     "@cap-js/sqlite": "^1",
     "@sap/cds-dk": "^8",
-    "@ui5/cli": "^4.0.20"
+    "@ui5/cli": "^4.0.20",
+    "mbt": "^1.2.27",
+    "rimraf": "^5.0.0"
   },
   "cds": {
     "[development]": {

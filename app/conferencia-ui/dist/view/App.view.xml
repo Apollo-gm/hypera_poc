@@ -4,5 +4,5 @@
   xmlns:mvc="sap.ui.core.mvc"
   displayBlock="true"
   height="100%">
-  <App id="app" class="hyperaApp" />
+  <App id="app" class="hyperaApp" busy="{app>/ui/busy}" />
 </mvc:View>
